@@ -1,8 +1,8 @@
 <?php
-namespace \SlaxWeb\Bootstrap;
+namespace SlaxWeb\Bootstrap;
 
-use \SlaxWeb\Hooks\Hooks;
-use \SlaxWeb\Registry\Container as Registry;
+use SlaxWeb\Hooks\Hooks;
+use SlaxWeb\Registry\Container as Registry;
 
 class Swf
 {
