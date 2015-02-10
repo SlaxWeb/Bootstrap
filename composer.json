@@ -2,7 +2,7 @@
     "name": "slaxweb/bootstrap",
     "description": "Bootstrap for SlaxWeb Framework",
     "license": "MIT",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "authors": [
         {
             "name": "Tomaz Lovrec",
