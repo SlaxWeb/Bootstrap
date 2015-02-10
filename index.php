@@ -62,7 +62,7 @@ require_once APPPATH . "config/hooks.php";
 /**
  * Lets begin. Load and start the bootstraper
  */
-$swf = new \Slaxweb\Bootstrap\Swf($loader, \SlaxWeb\Registry\Container::get("router"));
+$swf = new \SlaxWeb\Bootstrap\Swf($loader, \SlaxWeb\Registry\Container::get("router"));
 // Add some stuff to the Autoloader
 $swf->configureAutoload();
 
