@@ -32,6 +32,7 @@ class Swf
         $this->_loader->add("Controller\\", APPPATH);
         $this->_loader->add("Model\\", APPPATH);
         $this->_loader->add("View\\", APPPATH);
+        $this->_loader->add("Hooks\\", APPPATH);
 
         Hooks::call("bootstrap.after.autoload");
     }
