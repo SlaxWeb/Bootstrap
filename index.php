@@ -57,7 +57,6 @@ $routerParams = [
 \SlaxWeb\Registry\Container::setAlias("router", "\\SlaxWeb\\Router\\Router", $routerParams);
 
 // load the hooks
-Hooks::init();
 require_once APPPATH . "config/hooks.php";
 
 /**
