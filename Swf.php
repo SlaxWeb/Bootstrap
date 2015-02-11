@@ -44,7 +44,7 @@ class Swf
 
         $route = $this->_router->process();
 
-        if (Hooks::call("bootstrap.before.controller", $params["action"][0], $params["action"][1]) === true) {
+        if (Hooks::call("bootstrap.before.controller", $route["action"][0], $route["action"][1]) === true) {
             return;
         }
         if (is_object($route["action"]) && $route["action"] instanceof \Closure) {
