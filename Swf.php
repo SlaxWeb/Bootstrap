@@ -47,10 +47,11 @@ class Swf
         if (Hooks::call("bootstrap.before.controller", $route["action"]) === true) {
             return;
         }
-        if (is_object($route["action"]) && $route["action"] instanceof \Closure) {
+
+        if ($route["callable"] === true) {
             call_user_func_array($route["action"], $route["params"]);
         } else {
-            $controller = Registry::setAlias("controller", "\\Controller\\{$route["action"][0]}");
+            $controller = Registry::setAlias("controller", "{$route["action"][0]}");
             $controller->{$route["action"][1]}(...$route["params"]);
         }
 
