@@ -48,12 +48,8 @@ class Swf
             return;
         }
 
-        if ($route["callable"] === true) {
-            call_user_func_array($route["action"], $route["params"]);
-        } else {
-            $controller = Registry::setAlias("controller", "{$route["action"][0]}");
-            $controller->{$route["action"][1]}(...$route["params"]);
-        }
+        $controller = Registry::setAlias("controller", "{$route["action"][0]}");
+        $controller->{$route["action"][1]}(...$route["params"]);
 
         Hooks::call("bootstrap.after.route");
     }
