@@ -33,6 +33,7 @@ class Swf
         $this->_loader->add("Model\\", APPPATH);
         $this->_loader->add("View\\", APPPATH);
         $this->_loader->add("Hooks\\", APPPATH);
+        $this->_loader->add("Library\\", APPPATH);
 
         Hooks::call("bootstrap.after.autoload");
     }
