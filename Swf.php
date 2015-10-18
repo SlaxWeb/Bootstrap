@@ -3,6 +3,7 @@ namespace SlaxWeb\Bootstrap;
 
 use SlaxWeb\Hooks\Hooks;
 use SlaxWeb\Registry\Container as Registry;
+use SlaxWeb\Router\Exceptions\RouteNotFoundException;
 
 class Swf
 {
@@ -43,7 +44,19 @@ class Swf
         Hooks::call("bootstrap.before.route");
         require_once APPPATH . "config/routes.php";
 
-        $route = $this->_router->process();
+        try {
+            $route = $this->_router->process();
+        } catch (RouteNotFoundException $e) {
+            if (Hooks::call("bootstrap.before.noroute") === true) {
+                return;
+            }
+            if (function_exists("show404")) {
+                call_user_func_array("show404", [$e->getRequest()]);
+            } else {
+                echo "No route found for following request: {$e->getRequest()}";
+            }
+            return;
+        }
 
         if (Hooks::call("bootstrap.before.controller", $route["action"]) === true) {
             return;
