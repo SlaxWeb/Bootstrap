@@ -3,6 +3,7 @@ namespace SlaxWeb\Bootstrap;
 
 use SlaxWeb\Hooks\Hooks;
 use SlaxWeb\Registry\Container as Registry;
+use SlaxWeb\Router\Exceptions\RouteNotFoundException;
 
 class Swf
 {
@@ -33,6 +34,7 @@ class Swf
         $this->_loader->add("Model\\", APPPATH);
         $this->_loader->add("View\\", APPPATH);
         $this->_loader->add("Hooks\\", APPPATH);
+        $this->_loader->add("Library\\", APPPATH);
 
         Hooks::call("bootstrap.after.autoload");
     }
@@ -42,15 +44,28 @@ class Swf
         Hooks::call("bootstrap.before.route");
         require_once APPPATH . "config/routes.php";
 
-        $route = $this->_router->process();
+        try {
+            $route = $this->_router->process();
+        } catch (RouteNotFoundException $e) {
+            if (Hooks::call("bootstrap.before.noroute") === true) {
+                return;
+            }
+            if (function_exists("show404")) {
+                call_user_func_array("show404", [$e->getRequest()]);
+            } else {
+                echo "No route found for following request: {$e->getRequest()}";
+            }
+            return;
+        }
 
         if (Hooks::call("bootstrap.before.controller", $route["action"]) === true) {
             return;
         }
+
         if (is_object($route["action"]) && $route["action"] instanceof \Closure) {
             call_user_func_array($route["action"], $route["params"]);
         } else {
-            $controller = Registry::setAlias("controller", "\\Controller\\{$route["action"][0]}");
+            $controller = Registry::setAlias("controller", "{$route["action"][0]}");
             $controller->{$route["action"][1]}(...$route["params"]);
         }
 

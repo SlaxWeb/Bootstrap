@@ -32,29 +32,9 @@ require_once APPPATH . "config/config.php";
  */
 $loader = require_once FCPATH . "../vendor/autoload.php";
 
-/**
- * Parse the request
- */
-$uri = "";
-$method = "";
-// check if request is from CLI
-if (php_sapi_name() === "cli") {
-    array_shift($argv);
-    $uri = implode("/", $argv);
-    $method = "CLI";
-} else {
-    // normal WEB request
-    $uri = $_SERVER["REQUEST_URI"];
-    $method = $_SERVER["REQUEST_METHOD"];
-}
-$routerParams = [
-    "uri"       =>  $uri,
-    "method"    =>  $method
-];
-
 // add autoloader and router to Registry
 \SlaxWeb\Registry\Container::addAlias("loader", $loader);
-\SlaxWeb\Registry\Container::setAlias("router", "\\SlaxWeb\\Router\\Router", $routerParams);
+\SlaxWeb\Registry\Container::addAlias("router", \SlaxWeb\Router\Factory::init());
 
 // load the hooks
 require_once APPPATH . "config/hooks.php";
