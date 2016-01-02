@@ -11,8 +11,8 @@
     ],
     "require": {
 		"php":	">=5.6.0",
-        "slaxweb/hooks": "~0.1",
-        "slaxweb/registry": "~0.1"
+        "slaxweb/hooks": "~0.3",
+        "slaxweb/registry": "~0.2"
     },
 	"autoload":	{
 		"psr-0": {
