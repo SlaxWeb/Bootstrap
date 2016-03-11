@@ -1,3 +1,6 @@
 **.swp
-**.session.vim
 **.directory
+vendor/
+.tags
+
+tests/_output/*
