@@ -14,7 +14,7 @@
  * @link      https://github.com/slaxweb/
  * @version   0.3
  */
-namespace SlaxWeb\Router\Tests\Unit;
+namespace SlaxWeb\Bootstrap\Tests\Unit;
 
 use SlaxWeb\Bootstrap\Application;
 
@@ -65,10 +65,16 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_logger = $this->getMock("\\Psr\\Log\LoggerInterface");
 
         // get hooks mock
-        $this->_hooks = $this->getMock("\\SlaxWeb\\Hooks\Container");
+        $this->_hooks = $this->getMockBuilder("\\SlaxWeb\\Hooks\Container")
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
 
         // get router mock
-        $this->_router = $this->getMock("\\SlaxxWeb\\Router\\Dispatcher");
+        $this->_router = $this->getMockBuilder("\\SlaxWeb\\Router\\Dispatcher")
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
     }
 
     protected function tearDown()
