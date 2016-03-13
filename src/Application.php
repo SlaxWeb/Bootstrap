@@ -64,6 +64,6 @@ class Application extends \Pimple\Container
 
         $this->_logger->info("Application initialized");
 
-        $this->_hooks->exec("application.after.init");
+        $this->_hooks->exec("application.init.after");
     }
 }
