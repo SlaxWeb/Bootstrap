@@ -95,8 +95,51 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $this->_hooks->expects($this->once())
             ->method("exec")
-            ->with("application.after.init");
+            ->with("application.init.after");
 
         $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+    }
+
+    /**
+     * Test dispatch request
+     *
+     * Ensure that the application is properly executed, with 'run' method, by
+     * sending the request to the route dispatcher.
+     *
+     * @return void
+     */
+    public function testDispatchRequest()
+    {
+        $request = $this->getMockBuilder("\\SlaxWeb\\Router\\Request")
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $response = $this->getMockBuilder(
+            "\\Symfony\\Component\\HttpFoundation\\Response"
+        )->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $this->_router->expects($this->once())
+            ->method("dispatch")
+            ->with($request, $response, $this->_app);
+
+        $this->_logger->expects($this->exactly(3))
+            ->method("info");
+
+        $this->_logger->expects($this->once())
+            ->method("debug");
+
+        $this->_hooks->expects($this->exactly(3))
+            ->method("exec")
+            ->withConsecutive(
+                ["application.init.after"],
+                ["application.dispatch.before"],
+                ["application.dispatch.after"]
+            );
+
+        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->run($request, $response);
     }
 }
