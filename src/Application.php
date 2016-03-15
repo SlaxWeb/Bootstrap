@@ -70,6 +70,8 @@ class Application extends \Pimple\Container
         $this["appDir"] = rtrim($applicationDir, $dirSep) . $dirSep;
         $this["configHandler"] = ConfigContainer::PHP_CONFIG_HANDLER;
         $this["configResourceLocation"] = "{$this["appDir"]}Config{$dirSep}";
+
+        parent::__construct();
     }
 
     /**
