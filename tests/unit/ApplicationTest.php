@@ -127,12 +127,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->expects($this->once())
             ->method("_loadConfig");
 
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
 
         $this->assertTrue(isset($app["pubDir"]));
         $this->assertTrue(isset($app["appDir"]));
@@ -179,18 +179,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->__construct(__DIR__, __DIR__);
 
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
+        $app->init();
     }
 
     /**
@@ -218,12 +213,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_config->expects($this->exactly($expects))
             ->method("load");
 
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
     }
 
     /**
@@ -266,12 +261,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ], ["application.dispatch.after"]
             );
 
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
         $app->run($deps["request"], $deps["response"]);
     }
 
@@ -302,12 +297,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_router->expects($this->never())
             ->method("dispatch");
 
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
         $app->run($deps["request"], $deps["response"]);
         $app->run($deps["request"], $deps["response"]);
     }
@@ -341,12 +336,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $deps["response"]->expects($this->once())
             ->method("setContent");
 
-        $app->init(
-            $this->_config,
-            $this->_router,
-            $this->_hooks,
-            $this->_logger
-        );
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
         $app->run($deps["request"], $deps["response"]);
     }
 

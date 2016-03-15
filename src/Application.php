@@ -25,34 +25,6 @@ use SlaxWeb\Router\Exception\RouteNotFoundException;
 class Application extends \Pimple\Container
 {
     /**
-     * Config Container
-     *
-     * @var \SlaxWeb\Config\Container
-     */
-    protected $_config = null;
-
-    /**
-     * Route Dispatcher
-     *
-     * @var \SlaxWeb\Router\Dispatcher
-     */
-    protected $_router = null;
-
-    /**
-     * Hooks Container
-     *
-     * @var \SlaxWeb\Hooks\Container
-     */
-    protected $_hooks = null;
-
-    /**
-     * Logger
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $_logger = null;
-
-    /**
      * Constructor
      *
      * Sets application properties. Retrieves the public directory and
@@ -77,33 +49,19 @@ class Application extends \Pimple\Container
     /**
      * Application Initialization
      *
-     * Initializes the application class by setting the Config, Router, Hooks,
-     * and Logger objects to internal properties for later use.
+     * Initialize the Application class by loading providers and configuration
+     * files from their respective locations.
      *
-     * @param \SlaxWeb\Config\Container $config Configuration container
-     * @param \SlaxWeb\Router\Dispatcher $router Rotue Dispathcer
-     * @param \SlaxWeb\Hooks\Container $hooks Hooks Container
-     * @param \Psr\Log\LoggerInterface $logger Logger implementing PSR4
-     *                                         interface
      * @return void
      */
-    public function init(
-        ConfigContainer $config,
-        RouteDispatcher $router,
-        HooksContainer $hooks,
-        LoggerInterface $logger
-    ) {
-        $this->_config = $config;
-        $this->_router = $router;
-        $this->_hooks = $hooks;
-        $this->_logger = $logger;
-
-        $this->_registerProviders();
+    public function init()
+    {
         $this->_loadConfig();
+        $this->_registerProviders();
 
-        $this->_logger->info("Application initialized");
+        $this["logger.service"]->info("Application initialized");
 
-        $this->_hooks->exec("application.init.after");
+        $this["hooks.service"]->exec("application.init.after");
     }
 
     /**
@@ -118,9 +76,9 @@ class Application extends \Pimple\Container
      */
     public function run(Request $request, Response $response)
     {
-        $this->_logger->info("Beginning process for request.", [$request]);
+        $this["logger.service"]->info("Beginning process for request.", [$request]);
 
-        $result = $this->_hooks->exec(
+        $result = $this["hooks.service"]->exec(
             "application.dispatch.before",
             $request,
             $response,
@@ -136,10 +94,10 @@ class Application extends \Pimple\Container
 
         // dispatch request
         try {
-            $this->_router->dispatch($request, $response, $this);
+            $this["routeDispatcher.service"]->dispatch($request, $response, $this);
         } catch (RouteNotFoundException $routeNotFound) {
-            $this->_logger->error("No Route found for Request");
-            $this->_logger->debug(
+            $this["logger.service"]->error("No Route found for Request");
+            $this["logger.service"]->debug(
                 "No Route Found Debug Information",
                 ["exception" => $routeNotFound]
             );
@@ -148,16 +106,16 @@ class Application extends \Pimple\Container
             return;
         }
 
-        $this->_logger->info(
+        $this["logger.service"]->info(
             "Request has finished processing, Response is ready to be sent to "
             . "caller."
         );
 
-        $this->_hooks->exec("application.dispatch.after");
+        $this["hooks.service"]->exec("application.dispatch.after");
 
         // record the time after execution
         $end = microtime(true);
-        $this->_logger->debug(
+        $this["logger.service"]->debug(
             "Time taken to finish Request processing",
             [
                 "start"     =>  $start,
@@ -178,16 +136,16 @@ class Application extends \Pimple\Container
     protected function _registerProviders()
     {
         // check config exists
-        if (isset($this->_config["application.provider.register"]) === false
-            || $this->_config["application.provider.register"] === false) {
+        if (isset($this["config.service"]["application.provider.register"]) === false
+            || $this["config.service"]["application.provider.register"] === false) {
             return;
         }
-        if (isset($this->_config["application.providerList"]) === false
-            || is_array($this->_config["application.providerList"]) === false) {
+        if (isset($this["config.service"]["application.providerList"]) === false
+            || is_array($this["config.service"]["application.providerList"]) === false) {
             return;
         }
 
-        foreach ($this->_config["application.providerList"] as $providerClass) {
+        foreach ($this["config.service"]["application.providerList"] as $providerClass) {
             $this->register(new $providerClass);
         }
     }
@@ -204,7 +162,7 @@ class Application extends \Pimple\Container
     {
         foreach (scandir($this["configResourceLocation"]) as $file) {
             if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
-                $this->_config->load($file);
+                $this["config.service"]->load($file);
             }
         }
     }
