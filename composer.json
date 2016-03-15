@@ -25,7 +25,8 @@
 	"autoload":	{
 		"psr-4": {
 			"SlaxWeb\\Bootstrap\\": "src",
-            "SlaxWeb\\Bootstrap\\Tests\\Unit\\": "tests/unit"
+            "SlaxWeb\\Bootstrap\\Tests\\Unit\\": "tests/unit",
+            "SlaxWeb\\Bootstrap\\Tests\\Helper\\": "tests/_support/Helper"
 		}
 	},
     "extra": {

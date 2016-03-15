@@ -76,6 +76,8 @@ class Application extends \Pimple\Container
         $this->_hooks = $hooks;
         $this->_logger = $logger;
 
+        $this->_registerProviders();
+
         $this->_logger->info("Application initialized");
 
         $this->_hooks->exec("application.init.after");
@@ -140,6 +142,31 @@ class Application extends \Pimple\Container
                 "elapsed"   =>  $end - $start
             ]
         );
+    }
+
+    /**
+     * Register providers
+     *
+     * Check with the Configuration if the Application should register
+     * additional providers. If so register them with the DIC.
+     *
+     * @return void
+     */
+    protected function _registerProviders()
+    {
+        // check config exists
+        if (isset($this->_config["application.provider.register"]) === false
+            || $this->_config["application.provider.register"] === false) {
+            return;
+        }
+        if (isset($this->_config["application.providerList"]) === false
+            || is_array($this->_config["application.providerList"]) === false) {
+            return;
+        }
+
+        foreach ($this->_config["application.providerList"] as $providerClass) {
+            $this->register(new $providerClass);
+        }
     }
 
     /**
