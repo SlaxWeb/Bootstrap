@@ -108,10 +108,7 @@ class Application extends \Pimple\Container
                 ["exception" => $routeNotFound]
             );
 
-            $response->setContent(
-                "<h1>404 Not Found</h1>Requested page was not found.<h6>Default"
-                . " SlaxWeb/Framework Message</h6>"
-            );
+            $response->setContent($this->_load404Page());
             return;
         }
 
@@ -132,5 +129,22 @@ class Application extends \Pimple\Container
                 "elapsed"   =>  $end - $start
             ]
         );
+    }
+
+    /**
+     * Load Route Not Found Page
+     *
+     * Loads the 404 page and returns its contents.
+     *
+     * @return string
+     */
+    protected function _load404Page(): string
+    {
+        ob_start();
+        require_once __DIR__ . "/../resources/404.html";
+        $errorHtml = ob_get_contents();
+        ob_end_clean();
+
+        return $errorHtml;
     }
 }
