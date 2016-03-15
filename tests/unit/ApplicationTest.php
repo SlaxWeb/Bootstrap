@@ -49,10 +49,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     protected $_router = null;
 
     /**
+     * Config mock
+     *
+     * @var mocked object
+     */
+
+    protected $_config = null;
+
+    /**
      * Prepare the test
      *
      * Initialize the Application class and set it to the protected property
-     * '_app'. Also prepare the required components, Logger, Hooks, Router.
+     * '_app'. Also prepare the required components, Config, Logger, Hooks,
+     * Router.
      *
      * @return void
      */
@@ -72,6 +81,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         // get router mock
         $this->_router = $this->getMockBuilder("\\SlaxWeb\\Router\\Dispatcher")
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        // get config mock
+        $this->_config = $this->getMockBuilder("\\SlaxWeb\\Config\\Container")
             ->disableOriginalConstructor()
             ->setMethods([])
             ->getMock();
@@ -97,7 +112,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->method("exec")
             ->with("application.init.after");
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
     }
 
     /**
@@ -134,7 +154,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ], ["application.dispatch.after"]
             );
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
         $this->_app->run($deps["request"], $deps["response"]);
     }
 
@@ -159,7 +184,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_router->expects($this->never())
             ->method("dispatch");
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
         $this->_app->run($deps["request"], $deps["response"]);
         $this->_app->run($deps["request"], $deps["response"]);
     }
@@ -187,7 +217,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $deps["response"]->expects($this->once())
             ->method("setContent");
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
         $this->_app->run($deps["request"], $deps["response"]);
     }
 
