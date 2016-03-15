@@ -14,8 +14,10 @@
  */
 namespace SlaxWeb\Bootstrap;
 
+use SlaxWeb\Router\Request;
 use Psr\Log\LoggerInterface;
 use SlaxWeb\Hooks\Container as HooksContainer;
+use Symfony\Component\HttpFoundation\Response;
 use SlaxWeb\Router\Dispatcher as RouteDispatcher;
 
 class Application extends \Pimple\Container
@@ -64,6 +66,56 @@ class Application extends \Pimple\Container
 
         $this->_logger->info("Application initialized");
 
-        $this->_hooks->exec("application.after.init");
+        $this->_hooks->exec("application.init.after");
+    }
+
+    /**
+     * Execute Application
+     *
+     * Take a Request and Resonse, and dispatch them with the help of the Route
+     * Dispatcher.
+     *
+     * @param \SlaxWeb\Route\Request $request Received Request
+     * @param \Symfony\Component\HttpFoundation\Response Prepared Response
+     * @return void
+     */
+    public function run(Request $request, Response $response)
+    {
+        $this->_logger->info("Beginning process for request.", [$request]);
+
+        $result = $this->_hooks->exec(
+            "application.dispatch.before",
+            $request,
+            $response,
+            $this
+        );
+        if ($result === "exit"
+            || (is_array($result) && in_array("exit", $result))) {
+            return;
+        }
+
+        // record the time before execution
+        $start = microtime(true);
+
+        // dispatch request
+        $this->_router->dispatch($request, $response, $this);
+
+        $this->_logger->info(
+            "Request has finished processing, Response is ready to be sent to "
+            . "caller."
+        );
+
+        $this->_hooks->exec("application.dispatch.after");
+
+        // record the time after execution
+        $end = microtime(true);
+        $this->_logger->debug(
+            "Time taken to finish Request processing",
+            [
+                "start"     =>  $start,
+                "end"       =>  $end,
+                "elapsed"   =>  $end - $start
+            ]
+        );
     }
 }
