@@ -19,6 +19,7 @@ use Psr\Log\LoggerInterface;
 use SlaxWeb\Hooks\Container as HooksContainer;
 use Symfony\Component\HttpFoundation\Response;
 use SlaxWeb\Router\Dispatcher as RouteDispatcher;
+use SlaxWeb\Router\Exception\RouteNotFoundException;
 
 class Application extends \Pimple\Container
 {
@@ -98,7 +99,21 @@ class Application extends \Pimple\Container
         $start = microtime(true);
 
         // dispatch request
-        $this->_router->dispatch($request, $response, $this);
+        try {
+            $this->_router->dispatch($request, $response, $this);
+        } catch (RouteNotFoundException $routeNotFound) {
+            $this->_logger->error("No Route found for Request");
+            $this->_logger->debug(
+                "No Route Found Debug Information",
+                ["exception" => $routeNotFound]
+            );
+
+            $response->setContent(
+                "<h1>404 Not Found</h1>Requested page was not found.<h6>Default"
+                . " SlaxWeb/Framework Message</h6>"
+            );
+            return;
+        }
 
         $this->_logger->info(
             "Request has finished processing, Response is ready to be sent to "
