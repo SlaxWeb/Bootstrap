@@ -110,20 +110,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchRequest()
     {
-        $request = $this->getMockBuilder("\\SlaxWeb\\Router\\Request")
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
-
-        $response = $this->getMockBuilder(
-            "\\Symfony\\Component\\HttpFoundation\\Response"
-        )->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
+        $deps = $this->_getRunDependencies();
 
         $this->_router->expects($this->once())
             ->method("dispatch")
-            ->with($request, $response, $this->_app);
+            ->with($deps["request"], $deps["response"], $this->_app);
 
         $this->_logger->expects($this->exactly(3))
             ->method("info");
@@ -137,13 +128,63 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ["application.init.after"],
                 [
                     "application.dispatch.before",
-                    $request,
-                    $response,
+                    $deps["request"],
+                    $deps["response"],
                     $this->_app
                 ], ["application.dispatch.after"]
             );
 
         $this->_app->init($this->_router, $this->_hooks, $this->_logger);
-        $this->_app->run($request, $response);
+        $this->_app->run($deps["request"], $deps["response"]);
+    }
+
+    /**
+     * Test run interuption
+     *
+     * Ensure that the 'application,dispatch.before' hook can terminate further
+     * execution of the 'run' method.
+     *
+     * @return false
+     */
+    public function testRunInterupt()
+    {
+        $deps = $this->_getRunDependencies();
+
+        $this->_hooks->expects($this->exactly(3))
+            ->method("exec")
+            ->will(
+                $this->onConsecutiveCalls(null, "exit", [0, "exit", 1])
+            );
+
+        $this->_router->expects($this->never())
+            ->method("dispatch");
+
+        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->run($deps["request"], $deps["response"]);
+        $this->_app->run($deps["request"], $deps["response"]);
+    }
+
+    /**
+    * Get Run Dependensies
+    *
+    * Prepare all dependencies for the 'run' method testing, and return them
+    * in an array.
+    *
+    * @return array
+    */
+    protected function _getRunDependencies(): array
+    {
+        $request = $this->getMockBuilder("\\SlaxWeb\\Router\\Request")
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        $response = $this->getMockBuilder(
+            "\\Symfony\\Component\\HttpFoundation\\Response"
+        )->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        return ["request" => $request, "response" => $response];
     }
 }
