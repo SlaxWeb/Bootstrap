@@ -79,10 +79,24 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods([])
             ->getMock();
+
+        // create temporary config directory and file for tests
+        mkdir(__DIR__ . "/Config");
+        file_put_contents(__DIR__ . "/Config/test.php", "content");
     }
 
+    /**
+     * Tear down test
+     *
+     * Unlink the configuration file and directory that were created in 'setUp'
+     * method.
+     *
+     * @return void
+     */
     protected function tearDown()
     {
+        unlink(__DIR__ . "/Config/test.php");
+        rmdir(__DIR__ . "/Config/");
     }
 
     /**
@@ -96,7 +110,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders"])
+            ->setMethods(["_registerProviders", "_loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -109,6 +123,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->expects($this->once())
             ->method("_registerProviders");
+
+        $app->expects($this->once())
+            ->method("_loadConfig");
 
         $app->init(
             $this->_config,
@@ -168,6 +185,39 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             $this->_hooks,
             $this->_logger
         );
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
+    }
+
+    /**
+     * Test load config
+     *
+     * Ensure that the Application class loads all config files it finds in the
+     * configuration resource location.
+     *
+     * @return void
+     */
+    public function testLoadConfig()
+    {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
+            ->setMethods(["_registerProviders"])
+            ->getMock();
+        $app->__construct(__DIR__, __DIR__);
+
+        $expects = 0;
+        foreach (scandir(__DIR__ . "/Config/") as $file) {
+            if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
+                $expects++;
+            }
+        }
+        $this->_config->expects($this->exactly($expects))
+            ->method("load");
+
         $app->init(
             $this->_config,
             $this->_router,

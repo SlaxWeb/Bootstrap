@@ -97,6 +97,7 @@ class Application extends \Pimple\Container
         $this->_logger = $logger;
 
         $this->_registerProviders();
+        $this->_loadConfig();
 
         $this->_logger->info("Application initialized");
 
@@ -186,6 +187,23 @@ class Application extends \Pimple\Container
 
         foreach ($this->_config["application.providerList"] as $providerClass) {
             $this->register(new $providerClass);
+        }
+    }
+
+    /**
+     * Load configuration files
+     *
+     * Scan the configuration resource location directory and load all found
+     * PHP files with the Config component.
+     *
+     * @return void
+     */
+    protected function _loadConfig()
+    {
+        foreach (scandir($this["configResourceLocation"]) as $file) {
+            if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
+                $this->_config->load($file);
+            }
         }
     }
 
