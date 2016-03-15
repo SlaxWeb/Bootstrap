@@ -165,6 +165,33 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test 404 handling
+     *
+     * Ensure the 'run' method handles the thrown 404 exception by assigning a
+     * default error message to the response body.
+     *
+     * @return void
+     */
+    public function test404Handling()
+    {
+        $deps = $this->_getRunDependencies();
+
+        $this->_router->expects($this->once())
+            ->method("dispatch")
+            ->will(
+                $this->throwException(
+                    new \SlaxWeb\Router\Exception\RouteNotFoundException
+                )
+            );
+
+        $deps["response"]->expects($this->once())
+            ->method("setContent");
+
+        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $this->_app->run($deps["request"], $deps["response"]);
+    }
+
+    /**
     * Get Run Dependensies
     *
     * Prepare all dependencies for the 'run' method testing, and return them
