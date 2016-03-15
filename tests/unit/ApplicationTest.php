@@ -95,8 +95,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testInit()
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
             ->setMethods(["_registerProviders"])
             ->getMock();
+        $app->__construct(__DIR__, __DIR__);
 
         $this->_logger->expects($this->once())
             ->method("info");
@@ -114,6 +116,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             $this->_hooks,
             $this->_logger
         );
+
+        $this->assertTrue(isset($app["pubDir"]));
+        $this->assertTrue(isset($app["appDir"]));
+        $this->assertTrue(isset($app["configHandler"]));
+        $this->assertTrue(isset($app["configResourceLocation"]));
     }
 
     /**
@@ -127,6 +134,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testProviderRegistration()
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
             ->setMethods(["register"])
             ->getMock();
 
@@ -151,6 +159,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->with($this->callback(function ($class) {
                 return $class instanceof TestProvider;
             }));
+
+        $app->__construct(__DIR__, __DIR__);
 
         $app->init(
             $this->_config,
@@ -177,8 +187,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testDispatchRequest()
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
             ->setMethods(["_registerProviders"])
             ->getMock();
+        $app->__construct(__DIR__, __DIR__);
 
         $deps = $this->_getRunDependencies();
 
@@ -224,8 +236,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testRunInterupt()
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
             ->setMethods(["_registerProviders"])
             ->getMock();
+        $app->__construct(__DIR__, __DIR__);
 
         $deps = $this->_getRunDependencies();
 
@@ -259,8 +273,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function test404Handling()
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
             ->setMethods(["_registerProviders"])
             ->getMock();
+        $app->__construct(__DIR__, __DIR__);
 
         $deps = $this->_getRunDependencies();
 

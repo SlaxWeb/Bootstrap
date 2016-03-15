@@ -53,6 +53,26 @@ class Application extends \Pimple\Container
     protected $_logger = null;
 
     /**
+     * Constructor
+     *
+     * Sets application properties. Retrieves the public directory and
+     * application directiories as input.
+     *
+     * @param string $publicDir Public directory path
+     * @param string $applicationDir Application directory path
+     */
+    public function __construct(string $publicDir, string $applicationDir)
+    {
+        // are we running on windows?
+        $dirSep = strtoupper(substr(PHP_OS, 0, 3)) === "WIN" ? "\\" : "/";
+
+        $this["pubDir"] = rtrim($publicDir, $dirSep) . $dirSep;
+        $this["appDir"] = rtrim($applicationDir, $dirSep) . $dirSep;
+        $this["configHandler"] = ConfigContainer::PHP_CONFIG_HANDLER;
+        $this["configResourceLocation"] = "{$this["appDir"]}Config{$dirSep}";
+    }
+
+    /**
      * Application Initialization
      *
      * Initializes the application class by setting the Config, Router, Hooks,
