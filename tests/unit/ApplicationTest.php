@@ -135,8 +135,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->method("exec")
             ->withConsecutive(
                 ["application.init.after"],
-                ["application.dispatch.before"],
-                ["application.dispatch.after"]
+                [
+                    "application.dispatch.before",
+                    $request,
+                    $response,
+                    $this->_app
+                ], ["application.dispatch.after"]
             );
 
         $this->_app->init($this->_router, $this->_hooks, $this->_logger);
