@@ -18,11 +18,19 @@ use SlaxWeb\Router\Request;
 use Psr\Log\LoggerInterface;
 use SlaxWeb\Hooks\Container as HooksContainer;
 use Symfony\Component\HttpFoundation\Response;
+use SlaxWeb\Config\Container as ConfigContainer;
 use SlaxWeb\Router\Dispatcher as RouteDispatcher;
 use SlaxWeb\Router\Exception\RouteNotFoundException;
 
 class Application extends \Pimple\Container
 {
+    /**
+     * Config Container
+     *
+     * @var \SlaxWeb\Config\Container
+     */
+    protected $_config = null;
+
     /**
      * Route Dispatcher
      *
@@ -47,9 +55,10 @@ class Application extends \Pimple\Container
     /**
      * Application Initialization
      *
-     * Initializes the application class by setting the Router, Hooks, and
-     * Logger objects to internal properties for later use.
+     * Initializes the application class by setting the Config, Router, Hooks,
+     * and Logger objects to internal properties for later use.
      *
+     * @param \SlaxWeb\Config\Container $config Configuration container
      * @param \SlaxWeb\Router\Dispatcher $router Rotue Dispathcer
      * @param \SlaxWeb\Hooks\Container $hooks Hooks Container
      * @param \Psr\Log\LoggerInterface $logger Logger implementing PSR4
@@ -57,13 +66,17 @@ class Application extends \Pimple\Container
      * @return void
      */
     public function init(
+        ConfigContainer $config,
         RouteDispatcher $router,
         HooksContainer $hooks,
         LoggerInterface $logger
     ) {
+        $this->_config = $config;
         $this->_router = $router;
         $this->_hooks = $hooks;
         $this->_logger = $logger;
+
+        $this->_registerProviders();
 
         $this->_logger->info("Application initialized");
 
@@ -129,6 +142,31 @@ class Application extends \Pimple\Container
                 "elapsed"   =>  $end - $start
             ]
         );
+    }
+
+    /**
+     * Register providers
+     *
+     * Check with the Configuration if the Application should register
+     * additional providers. If so register them with the DIC.
+     *
+     * @return void
+     */
+    protected function _registerProviders()
+    {
+        // check config exists
+        if (isset($this->_config["application.provider.register"]) === false
+            || $this->_config["application.provider.register"] === false) {
+            return;
+        }
+        if (isset($this->_config["application.providerList"]) === false
+            || is_array($this->_config["application.providerList"]) === false) {
+            return;
+        }
+
+        foreach ($this->_config["application.providerList"] as $providerClass) {
+            $this->register(new $providerClass);
+        }
     }
 
     /**

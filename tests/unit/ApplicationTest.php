@@ -17,16 +17,10 @@
 namespace SlaxWeb\Bootstrap\Tests\Unit;
 
 use SlaxWeb\Bootstrap\Application;
+use SlaxWeb\Bootstrap\Tests\Helper\Provider as TestProvider;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Application instance
-     *
-     * @var \SlaxWeb\Bootstrap\Application
-     */
-    protected $_app = null;
-
     /**
      * Logger mock
      *
@@ -49,18 +43,22 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     protected $_router = null;
 
     /**
+     * Config mock
+     *
+     * @var mocked object
+     */
+
+    protected $_config = null;
+
+    /**
      * Prepare the test
      *
-     * Initialize the Application class and set it to the protected property
-     * '_app'. Also prepare the required components, Logger, Hooks, Router.
+     * Prepare the required components, Config, Logger, Hooks, Router.
      *
      * @return void
      */
     protected function setUp()
     {
-        // instantiate the Application class
-        $this->_app = new Application;
-
         // get logger mock
         $this->_logger = $this->getMock("\\Psr\\Log\LoggerInterface");
 
@@ -72,6 +70,12 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         // get router mock
         $this->_router = $this->getMockBuilder("\\SlaxWeb\\Router\\Dispatcher")
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+
+        // get config mock
+        $this->_config = $this->getMockBuilder("\\SlaxWeb\\Config\\Container")
             ->disableOriginalConstructor()
             ->setMethods([])
             ->getMock();
@@ -90,6 +94,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testInit()
     {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->setMethods(["_registerProviders"])
+            ->getMock();
+
         $this->_logger->expects($this->once())
             ->method("info");
 
@@ -97,7 +105,65 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->method("exec")
             ->with("application.init.after");
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
+        $app->expects($this->once())
+            ->method("_registerProviders");
+
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
+    }
+
+    /**
+     * Test Provider Registration
+     *
+     * Ensure that the application is registering the providers that the config
+     * dictates.
+     *
+     * @return void
+     */
+    public function testProviderRegistration()
+    {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->setMethods(["register"])
+            ->getMock();
+
+        $this->_config->expects($this->exactly(3))
+            ->method("offsetExists")
+            ->will($this->onConsecutiveCalls(true, true, true));
+
+        $this->_config->expects($this->exactly(4))
+            ->method("offsetGet")
+            ->withConsecutive(
+                ["application.provider.register"],
+                ["application.providerList"]
+            )->will($this->onConsecutiveCalls(
+                true,
+                ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
+                ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
+                false
+            ));
+
+        $app->expects($this->once())
+            ->method("register")
+            ->with($this->callback(function ($class) {
+                return $class instanceof TestProvider;
+            }));
+
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
     }
 
     /**
@@ -110,11 +176,15 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testDispatchRequest()
     {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->setMethods(["_registerProviders"])
+            ->getMock();
+
         $deps = $this->_getRunDependencies();
 
         $this->_router->expects($this->once())
             ->method("dispatch")
-            ->with($deps["request"], $deps["response"], $this->_app);
+            ->with($deps["request"], $deps["response"], $app);
 
         $this->_logger->expects($this->exactly(3))
             ->method("info");
@@ -130,12 +200,17 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     "application.dispatch.before",
                     $deps["request"],
                     $deps["response"],
-                    $this->_app
+                    $app
                 ], ["application.dispatch.after"]
             );
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
-        $this->_app->run($deps["request"], $deps["response"]);
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
+        $app->run($deps["request"], $deps["response"]);
     }
 
     /**
@@ -148,6 +223,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function testRunInterupt()
     {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->setMethods(["_registerProviders"])
+            ->getMock();
+
         $deps = $this->_getRunDependencies();
 
         $this->_hooks->expects($this->exactly(3))
@@ -159,9 +238,14 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_router->expects($this->never())
             ->method("dispatch");
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
-        $this->_app->run($deps["request"], $deps["response"]);
-        $this->_app->run($deps["request"], $deps["response"]);
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
+        $app->run($deps["request"], $deps["response"]);
+        $app->run($deps["request"], $deps["response"]);
     }
 
     /**
@@ -174,6 +258,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      */
     public function test404Handling()
     {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->setMethods(["_registerProviders"])
+            ->getMock();
+
         $deps = $this->_getRunDependencies();
 
         $this->_router->expects($this->once())
@@ -187,8 +275,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $deps["response"]->expects($this->once())
             ->method("setContent");
 
-        $this->_app->init($this->_router, $this->_hooks, $this->_logger);
-        $this->_app->run($deps["request"], $deps["response"]);
+        $app->init(
+            $this->_config,
+            $this->_router,
+            $this->_hooks,
+            $this->_logger
+        );
+        $app->run($deps["request"], $deps["response"]);
     }
 
     /**

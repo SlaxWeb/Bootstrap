@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "321b04b86a758bd141aef242baf6b357",
-    "content-hash": "2f9fd548d02d049eb409d6cd1c9778ba",
+    "hash": "4c96756393a331f32c55d1af26d78331",
+    "content-hash": "01ca7c8f341c804e715d5b4a6d8a9f94",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -385,12 +385,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "faddb526ee1cd7bacbc9f24911c10549018db3c5"
+                "reference": "e8e96f62c8fe5187811abbb7e270f315a81c5765"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/faddb526ee1cd7bacbc9f24911c10549018db3c5",
-                "reference": "faddb526ee1cd7bacbc9f24911c10549018db3c5",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/e8e96f62c8fe5187811abbb7e270f315a81c5765",
+                "reference": "e8e96f62c8fe5187811abbb7e270f315a81c5765",
                 "shasum": ""
             },
             "require": {
@@ -430,7 +430,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2016-03-10 19:37:45"
+            "time": "2016-03-11 09:58:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -2420,6 +2420,7 @@
         "slaxweb/router": 20,
         "slaxweb/hooks": 20,
         "slaxweb/logger": 20,
+        "slaxweb/config": 20,
         "codeception/codeception": 20
     },
     "prefer-stable": false,
