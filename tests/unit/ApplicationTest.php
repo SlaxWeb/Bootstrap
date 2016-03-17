@@ -152,7 +152,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register"])
+            ->setMethods(["register", "_loadHooks"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -162,8 +162,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")
             ->withConsecutive(
-                ["application.provider.register"],
-                ["application.providerList"]
+                ["app.provider.register"],
+                ["app.providerList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
@@ -200,7 +200,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register"])
+            ->setMethods(["register", "_registerProviders"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -210,8 +210,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")
             ->withConsecutive(
-                ["application.hooks.register"],
-                ["application.hooksList"]
+                ["app.hooks.load"],
+                ["app.hooksList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
