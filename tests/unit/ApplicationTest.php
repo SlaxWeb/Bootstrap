@@ -155,9 +155,9 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->setMethods(["register"])
             ->getMock();
 
-        $this->_config->expects($this->exactly(3))
+        $this->_config->expects($this->any())
             ->method("offsetExists")
-            ->will($this->onConsecutiveCalls(true, true, true));
+            ->willReturn(true);
 
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")

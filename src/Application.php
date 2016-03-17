@@ -30,16 +30,16 @@ class Application extends \Pimple\Container
      * Sets application properties. Retrieves the public directory and
      * application directiories as input.
      *
-     * @param string $publicDir Public directory path
-     * @param string $applicationDir Application directory path
+     * @param string $pubDir Public directory path
+     * @param string $appDir Application directory path
      */
-    public function __construct(string $publicDir, string $applicationDir)
+    public function __construct(string $pubDir, string $appDir)
     {
         // are we running on windows?
         $dirSep = strtoupper(substr(PHP_OS, 0, 3)) === "WIN" ? "\\" : "/";
 
-        $this["pubDir"] = rtrim($publicDir, $dirSep) . $dirSep;
-        $this["appDir"] = rtrim($applicationDir, $dirSep) . $dirSep;
+        $this["pubDir"] = rtrim($pubDir, $dirSep) . $dirSep;
+        $this["appDir"] = rtrim($appnDir, $dirSep) . $dirSep;
         $this["configHandler"] = ConfigContainer::PHP_CONFIG_HANDLER;
         $this["configResourceLocation"] = "{$this["appDir"]}Config{$dirSep}";
 
@@ -136,16 +136,17 @@ class Application extends \Pimple\Container
     protected function _registerProviders()
     {
         // check config exists
-        if (isset($this["config.service"]["application.provider.register"]) === false
-            || $this["config.service"]["application.provider.register"] === false) {
+        if (($this["config.service"]["app.provider.register"] ?? false)
+            === false) {
             return;
         }
-        if (isset($this["config.service"]["application.providerList"]) === false
-            || is_array($this["config.service"]["application.providerList"]) === false) {
+        if (isset($this["config.service"]["app.providerList"]) === false
+            || is_array($this["config.service"]["app.providerList"])
+            === false) {
             return;
         }
 
-        foreach ($this["config.service"]["application.providerList"] as $providerClass) {
+        foreach ($this["config.service"]["app.providerList"] as $providerClass) {
             $this->register(new $providerClass);
         }
     }
