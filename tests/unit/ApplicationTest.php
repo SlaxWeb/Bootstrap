@@ -152,18 +152,66 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register"])
+            ->setMethods(["register", "_loadHooks"])
             ->getMock();
 
-        $this->_config->expects($this->exactly(3))
+        $this->_config->expects($this->any())
             ->method("offsetExists")
-            ->will($this->onConsecutiveCalls(true, true, true));
+            ->willReturn(true);
 
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")
             ->withConsecutive(
-                ["application.provider.register"],
-                ["application.providerList"]
+                ["app.provider.register"],
+                ["app.providerList"]
+            )->will($this->onConsecutiveCalls(
+                true,
+                ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
+                ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
+                false
+            ));
+
+        $app->expects($this->once())
+            ->method("register")
+            ->with($this->callback(function ($class) {
+                return $class instanceof TestProvider;
+            }));
+
+        $app->__construct(__DIR__, __DIR__);
+
+        $app["config.service"] = $this->_config;
+        $app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $this->_logger;
+
+        $app->init();
+        $app->init();
+    }
+
+    /**
+     * Test Hook Providers Registration
+     *
+     * Ensure that the application is registering the hook definition providers
+     * that the config dictates.
+     *
+     * @return void
+     */
+    public function testHookProvidersRegistration()
+    {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
+            ->setMethods(["register", "_registerProviders"])
+            ->getMock();
+
+        $this->_config->expects($this->any())
+            ->method("offsetExists")
+            ->willReturn(true);
+
+        $this->_config->expects($this->exactly(4))
+            ->method("offsetGet")
+            ->withConsecutive(
+                ["app.hooks.load"],
+                ["app.hooksList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
