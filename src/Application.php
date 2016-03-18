@@ -57,8 +57,9 @@ class Application extends \Pimple\Container
     public function init()
     {
         $this->_loadConfig();
-        $this->_registerProviders();
         $this->_loadHooks();
+        $this->_loadRoutes();
+        $this->_registerProviders();
 
         $this["logger.service"]->info("Application initialized");
 
@@ -175,6 +176,33 @@ class Application extends \Pimple\Container
 
         foreach ($this["config.service"]["app.hooksList"] as $hookClass) {
             $this->register(new $hookClass);
+        }
+    }
+
+    /**
+     * Load Routes
+     *
+     * Check configuration if the Application should load routes with the help
+     * of Route Collections. If so register all their providers that are defined
+     * in the configuration with the DIC.
+     *
+     * @return void
+     */
+    protected function _loadRoutes()
+    {
+        // check config exists
+        if (($this["config.service"]["app.routes.load"] ?? false)
+            === false) {
+            return;
+        }
+        if (isset($this["config.service"]["app.routesList"]) === false
+            || is_array($this["config.service"]["app.routesList"])
+            === false) {
+            return;
+        }
+
+        foreach ($this["config.service"]["app.routesList"] as $routeClass) {
+            $this->register(new $routeClass);
         }
     }
 
