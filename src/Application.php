@@ -35,13 +35,13 @@ class Application extends \Pimple\Container
      */
     public function __construct(string $pubDir, string $appDir)
     {
-        // are we running on windows?
-        $dirSep = strtoupper(substr(PHP_OS, 0, 3)) === "WIN" ? "\\" : "/";
-
-        $this["pubDir"] = rtrim($pubDir, $dirSep) . $dirSep;
-        $this["appDir"] = rtrim($appDir, $dirSep) . $dirSep;
+        $this["pubDir"] = rtrim($pubDir, DIRECTORY_SEPARATOR)
+            . DIRECTORY_SEPARATOR;
+        $this["appDir"] = rtrim($appDir, DIRECTORY_SEPARATOR)
+            . DIRECTORY_SEPARATOR;
         $this["configHandler"] = ConfigContainer::PHP_CONFIG_HANDLER;
-        $this["configResourceLocation"] = "{$this["appDir"]}Config{$dirSep}";
+        $this["configResourceLocation"] = "{$this["appDir"]}Config"
+            . DIRECTORY_SEPARATOR;
 
         parent::__construct();
     }
