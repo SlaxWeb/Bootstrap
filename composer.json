@@ -2,7 +2,7 @@
     "name": "slaxweb/bootstrap",
     "description": "Bootstrap for SlaxWeb Framework",
     "license": "MIT",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "authors": [
         {
             "name": "Tomaz Lovrec",
@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-		"php":	">=7.0.0",
+        "php":  ">=7.0.0",
         "slaxweb/router": "~0.3",
         "slaxweb/hooks": "~0.4",
         "slaxweb/logger": "~0.2",
@@ -22,13 +22,13 @@
         "codeception/specify": "*",
         "behat/gherkin": "~4.4"
     },
-	"autoload":	{
-		"psr-4": {
-			"SlaxWeb\\Bootstrap\\": "src",
+    "autoload": {
+        "psr-4": {
+            "SlaxWeb\\Bootstrap\\": "src",
             "SlaxWeb\\Bootstrap\\Tests\\Unit\\": "tests/unit",
             "SlaxWeb\\Bootstrap\\Tests\\Helper\\": "tests/_support/Helper"
-		}
-	},
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-develop": "0.4.x-dev"

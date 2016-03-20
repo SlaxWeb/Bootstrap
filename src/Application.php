@@ -218,7 +218,7 @@ class Application extends \Pimple\Container
     {
         foreach (scandir($this["configResourceLocation"]) as $file) {
             if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
-                $this["config.service"]->load($file);
+                $this["config.service"]->load($file, true);
             }
         }
     }
