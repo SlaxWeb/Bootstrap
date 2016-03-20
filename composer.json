@@ -11,11 +11,11 @@
     ],
     "require": {
         "php":  ">=7.0.0",
-        "slaxweb/router": "~0.3",
-        "slaxweb/hooks": "~0.4",
-        "slaxweb/logger": "~0.2",
-        "slaxweb/config": "~0.1",
-        "pimple/pimple": "~3.0"
+        "slaxweb/router": "0.3.0",
+        "slaxweb/hooks": "0.4.0",
+        "slaxweb/logger": "0.2.0",
+        "slaxweb/config": "0.1.0",
+        "pimple/pimple": "3.0.2"
     },
     "require-dev": {
         "codeception/codeception": "dev-master",
