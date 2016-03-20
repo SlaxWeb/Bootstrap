@@ -11,10 +11,10 @@
     ],
     "require": {
 		"php":	">=7.0.0",
-        "slaxweb/router": "0.3.*@dev",
-        "slaxweb/hooks": "0.4.*@dev",
-        "slaxweb/logger": "0.2.*@dev",
-        "slaxweb/config": "0.1.*@dev",
+        "slaxweb/router": "~0.3",
+        "slaxweb/hooks": "~0.4",
+        "slaxweb/logger": "~0.2",
+        "slaxweb/config": "~0.1",
         "pimple/pimple": "~3.0"
     },
     "require-dev": {
@@ -31,8 +31,7 @@
 	},
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.3.x-dev"
+            "dev-develop": "0.4.x-dev"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }

@@ -1,5 +1,7 @@
 # Bootstrap
 
+[![Build Status](https://travis-ci.org/SlaxWeb/Bootstrap.svg?branch=0.3.0)](https://travis-ci.org/SlaxWeb/Bootstrap)
+
 The Bootstrap component is not intended for use outside of the
 SlaxWeb/Framework. It instantiates the application and dispatches the Request
 to the defined User Code, with the help of the Router. It also handles loading
