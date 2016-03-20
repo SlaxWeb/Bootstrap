@@ -14,7 +14,7 @@
         "slaxweb/router": "0.3.0",
         "slaxweb/hooks": "0.4.0",
         "slaxweb/logger": "0.2.0",
-        "slaxweb/config": "0.1.0",
+        "slaxweb/config": "0.1.1",
         "pimple/pimple": "3.0.2"
     },
     "require-dev": {
