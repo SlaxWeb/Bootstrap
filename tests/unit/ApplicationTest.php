@@ -130,7 +130,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
 
@@ -182,7 +182,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
         $app->init();
@@ -230,7 +230,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
         $app->init();
@@ -280,7 +280,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
         $app->init();
@@ -314,7 +314,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
     }
@@ -362,7 +362,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
         $app->run($deps["request"], $deps["response"]);
@@ -398,7 +398,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
         $app->run($deps["request"], $deps["response"]);
@@ -437,7 +437,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $this->_logger;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
         $app->run($deps["request"], $deps["response"]);
@@ -459,7 +459,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $response = $this->getMockBuilder(
-            "\\Symfony\\Component\\HttpFoundation\\Response"
+            "\\SlaxWeb\\Router\\Response"
         )->disableOriginalConstructor()
             ->setMethods([])
             ->getMock();
