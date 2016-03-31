@@ -184,12 +184,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlaxWeb/Config.git",
-                "reference": "39c2d074cf240ce019394c7582e011d5bbc2247b"
+                "reference": "a3608b9548f67bba513dabd9fa50b0fdf71a2562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlaxWeb/Config/zipball/39c2d074cf240ce019394c7582e011d5bbc2247b",
-                "reference": "39c2d074cf240ce019394c7582e011d5bbc2247b",
+                "url": "https://api.github.com/repos/SlaxWeb/Config/zipball/a3608b9548f67bba513dabd9fa50b0fdf71a2562",
+                "reference": "a3608b9548f67bba513dabd9fa50b0fdf71a2562",
                 "shasum": ""
             },
             "require": {
@@ -227,7 +227,7 @@
                 }
             ],
             "description": "Config component for the SlaxWeb Framework",
-            "time": "2016-03-26 10:28:36"
+            "time": "2016-03-31 15:30:37"
         },
         {
             "name": "slaxweb/exception",
@@ -321,12 +321,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlaxWeb/Hooks.git",
-                "reference": "37e41781b9dbbd00505bdf4020fabb80205e3b59"
+                "reference": "a03219ce7cbf3e8323bf11fb9b7f832bf8f55836"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlaxWeb/Hooks/zipball/37e41781b9dbbd00505bdf4020fabb80205e3b59",
-                "reference": "37e41781b9dbbd00505bdf4020fabb80205e3b59",
+                "url": "https://api.github.com/repos/SlaxWeb/Hooks/zipball/a03219ce7cbf3e8323bf11fb9b7f832bf8f55836",
+                "reference": "a03219ce7cbf3e8323bf11fb9b7f832bf8f55836",
                 "shasum": ""
             },
             "require": {
@@ -364,7 +364,7 @@
                 }
             ],
             "description": "Hooks library for SlaxWeb Framework",
-            "time": "2016-03-28 09:42:32"
+            "time": "2016-03-31 15:35:27"
         },
         {
             "name": "slaxweb/logger",
@@ -418,12 +418,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SlaxWeb/Router.git",
-                "reference": "e3d731019374c91b04cf0eb015c56830c44520b3"
+                "reference": "64ffdcfc8bffa8cf55fe0881d006bf1a4c6b6dd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SlaxWeb/Router/zipball/e3d731019374c91b04cf0eb015c56830c44520b3",
-                "reference": "e3d731019374c91b04cf0eb015c56830c44520b3",
+                "url": "https://api.github.com/repos/SlaxWeb/Router/zipball/64ffdcfc8bffa8cf55fe0881d006bf1a4c6b6dd5",
+                "reference": "64ffdcfc8bffa8cf55fe0881d006bf1a4c6b6dd5",
                 "shasum": ""
             },
             "require": {
@@ -465,7 +465,7 @@
                 }
             ],
             "description": "Router component for the SlaxWeb/Framework",
-            "time": "2016-03-28 09:46:18"
+            "time": "2016-03-31 15:36:39"
         },
         {
             "name": "symfony/http-foundation",
@@ -768,12 +768,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+                "reference": "416fb8ad1d095a87f1d21bc40711843cd122fd4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/416fb8ad1d095a87f1d21bc40711843cd122fd4a",
+                "reference": "416fb8ad1d095a87f1d21bc40711843cd122fd4a",
                 "shasum": ""
             },
             "require": {
@@ -814,7 +814,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2016-03-31 10:24:22"
         },
         {
             "name": "facebook/webdriver",
