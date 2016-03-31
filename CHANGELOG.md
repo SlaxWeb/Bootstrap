@@ -2,6 +2,11 @@
 
 Changes between version.
 
+## Current Changes
+
+* Logger no longer instantiated through container service, but rather through
+the container protected function
+
 ## v0.3
 
 ### v0.3.1

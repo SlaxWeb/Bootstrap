@@ -61,7 +61,7 @@ class Application extends \Pimple\Container
         $this->_loadRoutes();
         $this->_registerProviders();
 
-        $this["logger.service"]->info("Application initialized");
+        $this["logger.service"]()->info("Application initialized");
 
         $this["hooks.service"]->exec("application.init.after");
     }
@@ -78,7 +78,7 @@ class Application extends \Pimple\Container
      */
     public function run(Request $request, Response $response)
     {
-        $this["logger.service"]->info("Beginning process for request.", [$request]);
+        $this["logger.service"]()->info("Beginning process for request.", [$request]);
 
         $result = $this["hooks.service"]->exec(
             "application.dispatch.before",
@@ -98,8 +98,8 @@ class Application extends \Pimple\Container
         try {
             $this["routeDispatcher.service"]->dispatch($request, $response, $this);
         } catch (RouteNotFoundException $routeNotFound) {
-            $this["logger.service"]->error("No Route found for Request");
-            $this["logger.service"]->debug(
+            $this["logger.service"]()->error("No Route found for Request");
+            $this["logger.service"]()->debug(
                 "No Route Found Debug Information",
                 ["exception" => $routeNotFound]
             );
@@ -108,7 +108,7 @@ class Application extends \Pimple\Container
             return;
         }
 
-        $this["logger.service"]->info(
+        $this["logger.service"]()->info(
             "Request has finished processing, Response is ready to be sent to "
             . "caller."
         );
@@ -117,7 +117,7 @@ class Application extends \Pimple\Container
 
         // record the time after execution
         $end = microtime(true);
-        $this["logger.service"]->debug(
+        $this["logger.service"]()->debug(
             "Time taken to finish Request processing",
             [
                 "start"     =>  $start,
