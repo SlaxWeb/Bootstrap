@@ -233,7 +233,7 @@ class Application extends \Pimple\Container
     protected function _load404Page(): string
     {
         ob_start();
-        require_once __DIR__ . "/../resources/404.html";
+        require __DIR__ . "/../resources/404.html";
         $errorHtml = ob_get_contents();
         ob_end_clean();
 
