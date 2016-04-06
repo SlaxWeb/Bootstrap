@@ -222,8 +222,9 @@ class Application extends \Pimple\Container
         foreach (scandir($dir) as $file) {
             if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
                 $this["config.service"]->load($file, $prepend);
-            } elseif (is_dir($file) && ($file !== "." && $file !== "..")) {
-                $this->_loadConfig($file, false);
+            } elseif (is_dir("{$dir}/{$file}") && ($file !== "." && $file !== "..")) {
+                $this["config.service"]->addResDir("{$dir}/{$file}");
+                $this->_loadConfig("{$dir}/{$file}", false);
             }
         }
     }
