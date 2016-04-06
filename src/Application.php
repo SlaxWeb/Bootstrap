@@ -56,7 +56,7 @@ class Application extends \Pimple\Container
      */
     public function init()
     {
-        $this->_loadConfig();
+        $this->_loadConfig($this["configResourceLocation"]);
         $this->_loadHooks();
         $this->_loadRoutes();
         $this->_registerProviders();
@@ -210,15 +210,20 @@ class Application extends \Pimple\Container
      * Load configuration files
      *
      * Scan the configuration resource location directory and load all found
-     * PHP files with the Config component.
+     * PHP files with the Config component, recursively.
      *
+     * @param string $dir Directory from which the configuration files are loaded
+     * @param bool $prependNames Should configuration item names be prepended
+     *                           with the names of configuration file names
      * @return void
      */
-    protected function _loadConfig()
+    protected function _loadConfig(string $dir, bool $prepend = true)
     {
-        foreach (scandir($this["configResourceLocation"]) as $file) {
+        foreach (scandir($dir) as $file) {
             if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
-                $this["config.service"]->load($file, true);
+                $this["config.service"]->load($file, $prepend);
+            } elseif (is_dir($file) && ($file !== "." && $file !== "..")) {
+                $this->_loadConfig($file, false);
             }
         }
     }
