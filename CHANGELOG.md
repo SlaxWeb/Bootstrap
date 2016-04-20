@@ -4,8 +4,10 @@ Changes between version.
 
 ## Current Changes
 
-* Logger no longer instantiated through container service, but rather through
+* logger no longer instantiated through container service, but rather through
 the container protected function
+* add configuration directory sub-directories to configuration resource
+locations, and load all configuration files from those sub-directories
 
 ## v0.3
 
