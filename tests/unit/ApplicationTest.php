@@ -444,6 +444,19 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Url Override
+     *
+     * Ensure that the Application will set a custom URL if the configuration
+     * service provides a base url set in the configuration.
+     *
+     * @return void
+     */
+    public function testUrlOverride()
+    {
+        $this->assertTrue(false);
+    }
+
+    /**
     * Get Run Dependensies
     *
     * Prepare all dependencies for the 'run' method testing, and return them
