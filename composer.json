@@ -11,7 +11,7 @@
     ],
     "require": {
         "php":  ">=7.0.0",
-        "slaxweb/router": "0.4.*@dev",
+        "slaxweb/router": "dev-feature/preSetBaseUrl",
         "slaxweb/hooks": "0.5.*@dev",
         "slaxweb/logger": "0.3.*@dev",
         "slaxweb/config": "0.2.*@dev",
