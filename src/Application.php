@@ -246,10 +246,13 @@ class Application extends \Pimple\Container
             return;
         }
 
-        $url = parse_url($_SERVER["REQUEST_URI"]);
+        $uri = parse_url($_SERVER["REQUEST_URI"]);
+        $uri = $uri["path"] === "/" ? "" : $uri["path"];
         $query = isset($_SERVER["QUERY_STRING"]) ? "?{$_SERVER["QUERY_STRING"]}" : "";
-        $this["requestParameters"] = [
-            "uri"       =>  "{$this["config.service"]["app.baseUrl"]}/{$url["path"]}{$query}",
+        $baseUrl = rtrim("/", $this["config.service"]["app.baseUrl"]) . "/";
+
+        $this["requestParams"] = [
+            "uri"       =>  "{$this["config.service"]["app.baseUrl"]}{$uri}{$query}",
             "method"    =>  $_SERVER["REQUEST_METHOD"]
         ];
     }
