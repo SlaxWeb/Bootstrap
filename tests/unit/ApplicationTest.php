@@ -60,7 +60,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         // get logger mock
-        $this->_logger = $this->getMock("\\Psr\\Log\LoggerInterface");
+        $this->_logger = $this->createMock("\\Psr\\Log\LoggerInterface");
 
         // get hooks mock
         $this->_hooks = $this->getMockBuilder("\\SlaxWeb\\Hooks\Container")
@@ -144,7 +144,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
      * Test Provider Registration
      *
      * Ensure that the application is registering the providers that the config
-     * dictates.
+     * lists.
      *
      * @return void
      */
@@ -152,7 +152,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_loadHooks", "_loadRoutes"])
+            ->setMethods(["register", "_loadHooks", "_loadRoutes", "_prepRequestData"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -200,7 +200,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_registerProviders", "_loadRoutes"])
+            ->setMethods(["register", "_registerProviders", "_loadRoutes", "_prepRequestData"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -246,12 +246,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods([
-                "register",
-                "_registerProviders",
-                "_loadConfig",
-                "_loadHooks"]
-            )->getMock();
+            ->setMethods(["register", "_registerProviders", "_loadConfig", "_loadHooks", "_prepRequestData"])
+            ->getMock();
 
         $this->_config->expects($this->any())
             ->method("offsetExists")
@@ -441,6 +437,47 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->init();
         $app->run($deps["request"], $deps["response"]);
+    }
+
+    /**
+     * Test Url Override
+     *
+     * Ensure that the Application will set a custom URL if the configuration
+     * service provides a base url set in the configuration.
+     *
+     * @return void
+     */
+    public function testUrlOverride()
+    {
+        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
+            ->disableOriginalConstructor()
+            ->setMethods(["_loadConfig", "_loadHooks", "_loadRoutes", "_registerProviders"])
+            ->getMock();
+
+        $this->_config->expects($this->any())
+            ->method("offsetExists")
+            ->willReturn(true);
+
+        $this->_config->expects($this->exactly(4))
+            ->method("offsetGet")
+            ->withConsecutive(
+                ["app.baseUrl"]
+            )->will($this->onConsecutiveCalls(
+                true,
+                "http://test.url:8000/?foo=bar",
+                "http://test.url:8000/?foo=bar",
+                false
+            ));
+
+        $app->__construct(__DIR__, __DIR__);
+
+        $app["config.service"] = $this->_config;
+        //$app["routeDispatcher.service"] = $this->_router;
+        $app["hooks.service"] = $this->_hooks;
+        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
+
+        $app->init();
+        $app->init();
     }
 
     /**

@@ -8,6 +8,7 @@ Changes between version.
 the container protected function
 * add configuration directory sub-directories to configuration resource
 locations, and load all configuration files from those sub-directories
+* set request server name to the same value as in configuration, if set
 
 ## v0.3
 

@@ -60,6 +60,7 @@ class Application extends \Pimple\Container
         $this->_loadHooks();
         $this->_loadRoutes();
         $this->_registerProviders();
+        $this->_prepRequestData();
 
         $this["logger.service"]("System")->info("Application initialized");
 
@@ -227,6 +228,33 @@ class Application extends \Pimple\Container
                 $this->_loadConfig("{$dir}/{$file}", false);
             }
         }
+    }
+
+    /**
+     * Prepare request data
+     *
+     * Prepares the request URL if the config has a predefined base url set. If
+     * this is not set, then the request data is not set, and the Request class
+     * will do its best to guess its data. If the base url is set, then the HTTP
+     * method and the request URI have to be read from the $_SERVER superglobal.
+     *
+     * @return void
+     */
+    protected function _prepRequestData()
+    {
+        if (empty($this["config.service"]["app.baseUrl"])) {
+            return;
+        }
+
+        $uri = parse_url($_SERVER["REQUEST_URI"] ?? "");
+        $uri = $uri["path"] === "/" ? "" : $uri["path"];
+        $query = isset($_SERVER["QUERY_STRING"]) ? "?{$_SERVER["QUERY_STRING"]}" : "";
+        $baseUrl = rtrim("/", $this["config.service"]["app.baseUrl"]) . "/";
+
+        $this["requestParams"] = [
+            "uri"       =>  "{$this["config.service"]["app.baseUrl"]}{$uri}{$query}",
+            "method"    =>  $_SERVER["REQUEST_METHOD"] ?? "GET"
+        ];
     }
 
     /**
