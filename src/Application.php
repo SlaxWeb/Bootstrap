@@ -10,7 +10,7 @@
  * @copyright 2016 (c) Tomaz Lovrec
  * @license   MIT <https://opensource.org/licenses/MIT>
  * @link      https://github.com/slaxweb/
- * @version   0.3
+ * @version   0.4
  */
 namespace SlaxWeb\Bootstrap;
 
@@ -35,28 +35,29 @@ class Application extends \Pimple\Container
      */
     public function __construct(string $pubDir, string $appDir)
     {
-        $this["pubDir"] = rtrim($pubDir, DIRECTORY_SEPARATOR)
-            . DIRECTORY_SEPARATOR;
-        $this["appDir"] = rtrim($appDir, DIRECTORY_SEPARATOR)
-            . DIRECTORY_SEPARATOR;
+        $this["pubDir"] = realpath($pubDir) . DIRECTORY_SEPARATOR;
+        $this["appDir"] = realpath($appDir) . DIRECTORY_SEPARATOR;
         $this["configHandler"] = ConfigContainer::PHP_CONFIG_HANDLER;
         $this["configResourceLocation"] = "{$this["appDir"]}Config"
             . DIRECTORY_SEPARATOR;
 
         parent::__construct();
+
+        // register config provider and load config
+        $this->register(new \SlaxWeb\Config\Service\Provider);
+        $this->_loadConfig($this["configResourceLocation"]);
     }
 
     /**
      * Application Initialization
      *
-     * Initialize the Application class by loading providers and configuration
-     * files from their respective locations.
+     * Initialize the Application class by loading providers and routesfrom their
+     * respective locations.
      *
      * @return void
      */
     public function init()
     {
-        $this->_loadConfig($this["configResourceLocation"]);
         $this->_loadHooks();
         $this->_loadRoutes();
         $this->_registerProviders();
