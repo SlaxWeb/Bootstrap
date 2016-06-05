@@ -58,6 +58,7 @@ class Application extends \Pimple\Container
      */
     public function init()
     {
+        var_dump("oh snap");
         $this->_loadHooks();
         $this->_loadRoutes();
         $this->_registerProviders();
@@ -151,6 +152,7 @@ class Application extends \Pimple\Container
         }
 
         foreach ($this["config.service"]["app.providerList"] as $providerClass) {
+            var_dump("reg");
             $this->register(new $providerClass);
         }
     }

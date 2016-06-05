@@ -110,7 +110,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders", "_loadConfig"])
+            ->setMethods(["_registerProviders", "_loadConfig", "register"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -123,9 +123,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->expects($this->once())
             ->method("_registerProviders");
-
-        $app->expects($this->once())
-            ->method("_loadConfig");
 
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
@@ -152,7 +149,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_loadHooks", "_loadRoutes", "_prepRequestData"])
+            ->setMethods(["register", "_loadHooks", "_loadRoutes", "_prepRequestData", "_loadConfig"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -171,11 +168,17 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 false
             ));
 
-        $app->expects($this->once())
+        $app->expects($this->exactly(2))
             ->method("register")
-            ->with($this->callback(function ($class) {
-                return $class instanceof TestProvider;
-            }));
+            ->withConsecutive(
+                [new \SlaxWeb\Config\Service\Provider],
+                [
+                    $this->callback(function ($class) {
+                        return $class instanceof TestProvider;
+                    })
+                ],
+                [new \SlaxWeb\Config\Service\Provider]
+            );
 
         $app->__construct(__DIR__, __DIR__);
 
@@ -200,7 +203,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_registerProviders", "_loadRoutes", "_prepRequestData"])
+            ->setMethods(["register", "_registerProviders", "_loadRoutes", "_prepRequestData", "_loadConfig"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -219,11 +222,17 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 false
             ));
 
-        $app->expects($this->once())
+        $app->expects($this->exactly(2))
             ->method("register")
-            ->with($this->callback(function ($class) {
-                return $class instanceof TestProvider;
-            }));
+            ->withConsecutive(
+                [new \SlaxWeb\Config\Service\Provider],
+                [
+                    $this->callback(function ($class) {
+                        return $class instanceof TestProvider;
+                    })
+                ],
+                [new \SlaxWeb\Config\Service\Provider]
+            );
 
         $app->__construct(__DIR__, __DIR__);
 
@@ -265,11 +274,17 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 false
             ));
 
-        $app->expects($this->once())
+        $app->expects($this->exactly(2))
             ->method("register")
-            ->with($this->callback(function ($class) {
-                return $class instanceof TestProvider;
-            }));
+            ->withConsecutive(
+                [new \SlaxWeb\Config\Service\Provider],
+                [
+                    $this->callback(function ($class) {
+                        return $class instanceof TestProvider;
+                    })
+                ],
+                [new \SlaxWeb\Config\Service\Provider]
+            );
 
         $app->__construct(__DIR__, __DIR__);
 
@@ -294,10 +309,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders"])
+            ->setMethods(["_registerProviders", "register"])
             ->getMock();
-        $app->__construct(__DIR__, __DIR__);
-
         $expects = 0;
         foreach (scandir(__DIR__ . "/Config/") as $file) {
             if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
@@ -308,11 +321,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->method("load");
 
         $app["config.service"] = $this->_config;
-        $app["routeDispatcher.service"] = $this->_router;
-        $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
-        $app->init();
+        $app->__construct(__DIR__, __DIR__);
     }
 
     /**
@@ -327,7 +337,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders"])
+            ->setMethods(["_registerProviders", "register", "_loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -376,7 +386,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders"])
+            ->setMethods(["_registerProviders", "register", "_loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -413,7 +423,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders"])
+            ->setMethods(["_registerProviders", "register", "_loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
