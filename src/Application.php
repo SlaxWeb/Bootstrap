@@ -65,6 +65,7 @@ class Application extends \Pimple\Container
 
         $this["logger.service"]("System")->info("Application initialized");
 
+        $this["hooks.service"]->setParams([$this]);
         $this["hooks.service"]->exec("application.init.after");
     }
 
