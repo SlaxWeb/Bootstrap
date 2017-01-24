@@ -2,7 +2,14 @@
 
 Changes between version.
 
-## Current Changes
+## v0.4
+
+### v0.4.1
+
+* use the prepared base url(with guaranteed trailing slash) while preparing the
+request
+
+### v0.4.0
 
 * logger no longer instantiated through container service, but rather through
 the container protected function

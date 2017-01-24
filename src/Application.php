@@ -254,7 +254,7 @@ class Application extends \Pimple\Container
         $baseUrl = rtrim("/", $this["config.service"]["app.baseUrl"]) . "/";
 
         $this["requestParams"] = [
-            "uri"       =>  "{$this["config.service"]["app.baseUrl"]}{$uri}{$query}",
+            "uri"       =>  $baseUrl . $uri . $query,
             "method"    =>  $_SERVER["REQUEST_METHOD"] ?? "GET"
         ];
     }
