@@ -126,7 +126,7 @@ class Application extends \Pimple\Container
                 "start"     =>  $start,
                 "end"       =>  $end,
                 "elapsed"   =>  $end - $start,
-                "uri"       =>  $this["request.service"]->getRequestUri()
+                "uri"       =>  $request->getRequestUri()
             ]
         );
     }
