@@ -2,6 +2,13 @@
 
 Changes between version.
 
+## Current changes
+
+* set base URL and base path to application properties
+* add base controller abstract class for simplified instantiation of controller
+classes
+* add controller loader service to application services
+
 ## v0.4
 
 ### v0.4.1
