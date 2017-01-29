@@ -45,7 +45,7 @@ class Application extends \Pimple\Container
 
         // register config provider and load config
         $this->register(new \SlaxWeb\Config\Service\Provider);
-        $this->_loadConfig($this["configResourceLocation"]);
+        $this->loadConfig($this["configResourceLocation"]);
     }
 
     /**
@@ -58,10 +58,10 @@ class Application extends \Pimple\Container
      */
     public function init()
     {
-        $this->_loadHooks();
-        $this->_loadRoutes();
-        $this->_registerProviders();
-        $this->_prepRequestData();
+        $this->loadHooks();
+        $this->loadRoutes();
+        $this->registerProviders();
+        $this->prepRequestData();
 
         $this["logger.service"]("System")->info("Application initialized");
 
@@ -107,7 +107,7 @@ class Application extends \Pimple\Container
                 ["exception" => $routeNotFound]
             );
 
-            $response->setContent($this->_load404Page());
+            $response->setContent($this->load404Page());
             return;
         }
 
@@ -139,7 +139,7 @@ class Application extends \Pimple\Container
      *
      * @return void
      */
-    protected function _registerProviders()
+    protected function registerProviders()
     {
         // check config exists
         if (($this["config.service"]["app.provider.register"] ?? false)
@@ -165,7 +165,7 @@ class Application extends \Pimple\Container
      *
      * @return void
      */
-    protected function _loadHooks()
+    protected function loadHooks()
     {
         // check config exists
         if (($this["config.service"]["app.hooks.load"] ?? false)
@@ -192,7 +192,7 @@ class Application extends \Pimple\Container
      *
      * @return void
      */
-    protected function _loadRoutes()
+    protected function loadRoutes()
     {
         // check config exists
         if (($this["config.service"]["app.routes.load"] ?? false)
@@ -221,14 +221,14 @@ class Application extends \Pimple\Container
      *                           with the names of configuration file names
      * @return void
      */
-    protected function _loadConfig(string $dir, bool $prepend = true)
+    protected function loadConfig(string $dir, bool $prepend = true)
     {
         foreach (scandir($dir) as $file) {
             if (strtolower(pathinfo($file, PATHINFO_EXTENSION)) === "php") {
                 $this["config.service"]->load($file, $prepend);
             } elseif (is_dir("{$dir}/{$file}") && ($file !== "." && $file !== "..")) {
                 $this["config.service"]->addResDir("{$dir}/{$file}");
-                $this->_loadConfig("{$dir}/{$file}", false);
+                $this->loadConfig("{$dir}/{$file}", false);
             }
         }
     }
@@ -243,7 +243,7 @@ class Application extends \Pimple\Container
      *
      * @return void
      */
-    protected function _prepRequestData()
+    protected function prepRequestData()
     {
         if (empty($this["config.service"]["app.baseUrl"])) {
             return;
@@ -267,7 +267,7 @@ class Application extends \Pimple\Container
      *
      * @return string
      */
-    protected function _load404Page(): string
+    protected function load404Page(): string
     {
         ob_start();
         require __DIR__ . "/../resources/404.html";

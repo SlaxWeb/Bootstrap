@@ -110,7 +110,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders", "_loadConfig", "register"])
+            ->setMethods(["registerProviders", "loadConfig", "register"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -122,7 +122,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->with("application.init.after");
 
         $app->expects($this->once())
-            ->method("_registerProviders");
+            ->method("registerProviders");
 
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
@@ -149,7 +149,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_loadHooks", "_loadRoutes", "_prepRequestData", "_loadConfig"])
+            ->setMethods(["register", "loadHooks", "loadRoutes", "prepRequestData", "loadConfig"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -203,7 +203,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_registerProviders", "_loadRoutes", "_prepRequestData", "_loadConfig"])
+            ->setMethods(["register", "registerProviders", "loadRoutes", "prepRequestData", "loadConfig"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -255,7 +255,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "_registerProviders", "_loadConfig", "_loadHooks", "_prepRequestData"])
+            ->setMethods(["register", "registerProviders", "loadConfig", "loadHooks", "prepRequestData"])
             ->getMock();
 
         $this->_config->expects($this->any())
@@ -309,7 +309,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders", "register"])
+            ->setMethods(["registerProviders", "register"])
             ->getMock();
         $expects = 0;
         foreach (scandir(__DIR__ . "/Config/") as $file) {
@@ -337,7 +337,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders", "register", "_loadConfig"])
+            ->setMethods(["registerProviders", "register", "loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -386,7 +386,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders", "register", "_loadConfig"])
+            ->setMethods(["registerProviders", "register", "loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -423,7 +423,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_registerProviders", "register", "_loadConfig"])
+            ->setMethods(["registerProviders", "register", "loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -461,7 +461,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["_loadConfig", "_loadHooks", "_loadRoutes", "_registerProviders"])
+            ->setMethods(["loadConfig", "loadHooks", "loadRoutes", "registerProviders"])
             ->getMock();
 
         $this->_config->expects($this->any())
