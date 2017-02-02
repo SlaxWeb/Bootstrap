@@ -159,8 +159,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")
             ->withConsecutive(
-                ["app.provider.register"],
-                ["app.providerList"]
+                ["provider.provider.register"],
+                ["provider.providerList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
@@ -213,8 +213,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")
             ->withConsecutive(
-                ["app.hooks.load"],
-                ["app.hooksList"]
+                ["provider.hooks.load"],
+                ["provider.hooksList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
@@ -265,8 +265,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_config->expects($this->exactly(4))
             ->method("offsetGet")
             ->withConsecutive(
-                ["app.routes.load"],
-                ["app.routesList"]
+                ["provider.routes.load"],
+                ["provider.routesList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
