@@ -142,17 +142,17 @@ class Application extends \Pimple\Container
     protected function registerProviders()
     {
         // check config exists
-        if (($this["config.service"]["app.provider.register"] ?? false)
+        if (($this["config.service"]["provider.provider.register"] ?? false)
             === false) {
             return;
         }
-        if (isset($this["config.service"]["app.providerList"]) === false
-            || is_array($this["config.service"]["app.providerList"])
+        if (isset($this["config.service"]["provider.providerList"]) === false
+            || is_array($this["config.service"]["provider.providerList"])
             === false) {
             return;
         }
 
-        foreach ($this["config.service"]["app.providerList"] as $providerClass) {
+        foreach ($this["config.service"]["provider.providerList"] as $providerClass) {
             $this->register(new $providerClass);
         }
     }
@@ -168,17 +168,17 @@ class Application extends \Pimple\Container
     protected function loadHooks()
     {
         // check config exists
-        if (($this["config.service"]["app.hooks.load"] ?? false)
+        if (($this["config.service"]["provider.hooks.load"] ?? false)
             === false) {
             return;
         }
-        if (isset($this["config.service"]["app.hooksList"]) === false
-            || is_array($this["config.service"]["app.hooksList"])
+        if (isset($this["config.service"]["provider.hooksList"]) === false
+            || is_array($this["config.service"]["provider.hooksList"])
             === false) {
             return;
         }
 
-        foreach ($this["config.service"]["app.hooksList"] as $hookClass) {
+        foreach ($this["config.service"]["provider.hooksList"] as $hookClass) {
             $this->register(new $hookClass);
         }
     }
@@ -195,17 +195,17 @@ class Application extends \Pimple\Container
     protected function loadRoutes()
     {
         // check config exists
-        if (($this["config.service"]["app.routes.load"] ?? false)
+        if (($this["config.service"]["provider.routes.load"] ?? false)
             === false) {
             return;
         }
-        if (isset($this["config.service"]["app.routesList"]) === false
-            || is_array($this["config.service"]["app.routesList"])
+        if (isset($this["config.service"]["provider.routesList"]) === false
+            || is_array($this["config.service"]["provider.routesList"])
             === false) {
             return;
         }
 
-        foreach ($this["config.service"]["app.routesList"] as $routeClass) {
+        foreach ($this["config.service"]["provider.routesList"] as $routeClass) {
             $this->register(new $routeClass);
         }
     }
