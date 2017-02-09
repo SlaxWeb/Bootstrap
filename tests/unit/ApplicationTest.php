@@ -124,6 +124,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->expects($this->once())
             ->method("registerProviders");
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -182,6 +183,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->__construct(__DIR__, __DIR__);
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -236,6 +238,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->__construct(__DIR__, __DIR__);
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -288,6 +291,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->__construct(__DIR__, __DIR__);
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -365,6 +369,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                 ], ["application.dispatch.after"]
             );
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -401,6 +406,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_router->expects($this->never())
             ->method("dispatch");
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -440,6 +446,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $deps["response"]->expects($this->once())
             ->method("setContent");
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
         $app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
@@ -481,8 +488,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $app->__construct(__DIR__, __DIR__);
 
+        $app["output.service"] = null;
         $app["config.service"] = $this->_config;
-        //$app["routeDispatcher.service"] = $this->_router;
         $app["hooks.service"] = $this->_hooks;
         $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
