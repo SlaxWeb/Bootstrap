@@ -63,6 +63,10 @@ class Application extends \Pimple\Container
         $this->registerProviders();
         $this->prepRequestData();
 
+        // initialize the output component by loading it, the component will register
+        // handlers on construction
+        $this["output.service"];
+
         $this["logger.service"]("System")->info("Application initialized");
 
         $this["hooks.service"]->setParams([$this]);
