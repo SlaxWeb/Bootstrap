@@ -9,7 +9,7 @@ use Pimple\Container as Application;
  * Bootstrap Service Provider exposes the Controller Loader service to the dependency
  * injection container.
  *
- * @package   SlaxWeb\Router
+ * @package   SlaxWeb\Bootstrap
  * @author    Tomaz Lovrec <tomaz.lovrec@gmail.com>
  * @copyright 2016 (c) Tomaz Lovrec
  * @license   MIT <https://opensource.org/licenses/MIT>
@@ -21,7 +21,7 @@ class Provider implements \Pimple\ServiceProviderInterface
     /**
      * Register provider
      *
-     * Register the Hooks Service Provider to the DIC.
+     * Register the Controller Loader with the DIC.
      *
      * @param \Pimple\Container $app DIC
      * @return void
