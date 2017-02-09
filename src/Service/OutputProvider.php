@@ -16,7 +16,7 @@ use Pimple\Container as Application;
  * @link      https://github.com/slaxweb/
  * @version   0.4
  */
-class OutputProvider extends \Pimple\ServiceProviderInterface
+class OutputProvider implements \Pimple\ServiceProviderInterface
 {
     /**
      * Register provider
