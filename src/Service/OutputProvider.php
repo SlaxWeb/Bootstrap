@@ -30,20 +30,44 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
     {
         $app["output.service"] = function(Application $app) {
             $config = $app["config.service"];
-            return new \SlaxWeb\Output\Manager(
+            $manager = new \SlaxWeb\Output\Manager(
                 $app["logger.service"]("System"),
                 $app["response.service"],
                 [
                     "enabled"           =>  $config["output.enable"] ?? false,
                     "allowOutput"       =>  $config["output.permitDirectOutput"] ?? true,
-                    "mode"              =>  $config["output.defaultOutputMode"] ?? \SlaxWeb\Output\Manager::MODE_JSON,
-                    "allowModeChange"   =>  $config["output.permitModeChange"] ?? true,
                     "environment"       =>  $config["app.environment"] ?? "development"
                 ], [
                     "style"     =>  realpath(__DIR__ . "/../../resources/errorstyles.html"),
                     "template"  =>  realpath(__DIR__ . "/../../resources/error.php")
                 ]
             );
+            $manager->setHandlerGetter($app["outputHandler.service"]);
         };
+
+        $app["outputHandler.service"] = $app->protect(function() use ($app) {
+            $handler = $app["outputHandler"] ?? $app["config.service"]["output.defaultHandler"];
+
+            switch ($handler) {
+            case "view":
+                $handler = new \SlaxWeb\Output\Handler\View;
+                break;
+
+            case "json":
+                $handler = new \SlaxWeb\Output\Handler\Json;
+                break;
+
+            default:
+                if (isset($app[$handler])) {
+                    $handler = $app[$handler];
+                } elseif (class_exists($handler)) {
+                    $handler = new $handler;
+                } else {
+                    throw new Exception("Output Handler class {$handler} does not exist.");
+                }
+            }
+
+            return $handler;
+        });
     }
 }
