@@ -1,6 +1,6 @@
 <div class="slaxweb-error-container">
     <div class="error-line">
-        <span class="error-label">Severity:</span><?= $code; ?>
+        <span class="error-label">Severity:</span><?= $severity; ?>
     </div>
     <div class="error-line">
         <span class="error-label">Message:</span><?= $error; ?>
