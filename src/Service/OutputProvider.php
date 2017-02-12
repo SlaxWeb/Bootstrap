@@ -51,11 +51,11 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
 
             switch ($handler) {
             case "view":
-                $handler = new \SlaxWeb\Output\Handler\View;
+                $handler = $app["outputViewHandler.service"];
                 break;
 
             case "json":
-                $handler = new \SlaxWeb\Output\Handler\Json;
+                $handler = $app["outputJsonHandler.service"];
                 break;
 
             default:
@@ -70,5 +70,13 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
 
             return $handler;
         });
+
+        $app["outputViewHandler.service"] = function(Application $app) {
+            return new \SlaxWeb\Output\Handler\View;
+        };
+
+        $app["outputJsonHandler.service"] = function(Application $app) {
+            return new \SlaxWeb\Output\Handler\Json;
+        };
     }
 }
