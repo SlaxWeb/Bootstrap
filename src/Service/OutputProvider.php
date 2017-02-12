@@ -43,6 +43,7 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
                 ]
             );
             $manager->setHandlerGetter($app["outputHandler.service"]);
+            return $manager;
         };
 
         $app["outputHandler.service"] = $app->protect(function() use ($app) {
