@@ -50,32 +50,34 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
             $handler = $app["outputHandler"] ?? $app["config.service"]["output.defaultHandler"];
 
             switch ($handler) {
-            case "view":
-                $handler = $app["outputViewHandler.service"];
-                break;
+                case "view":
+                    $handler = $app["outputViewHandler.service"];
+                    break;
 
-            case "json":
-                $handler = $app["outputJsonHandler.service"];
-                break;
+                case "json":
+                    $handler = $app["outputJsonHandler.service"];
+                    break;
 
-            default:
-                if (isset($app[$handler])) {
-                    $handler = $app[$handler];
-                } elseif (class_exists($handler)) {
-                    $handler = new $handler;
-                } else {
-                    throw new Exception("Output Handler class {$handler} does not exist.");
-                }
+                default:
+                    if (isset($app[$handler])) {
+                        $handler = $app[$handler];
+                    } elseif (class_exists($handler)) {
+                        $handler = new $handler;
+                    } else {
+                        throw new Exception(
+                            "Output Handler class {$handler} does not exist."
+                        );
+                    }
             }
 
             return $handler;
         });
 
-        $app["outputViewHandler.service"] = function(Application $app) {
+        $app["outputViewHandler.service"] = function() {
             return new \SlaxWeb\Output\Handler\View;
         };
 
-        $app["outputJsonHandler.service"] = function(Application $app) {
+        $app["outputJsonHandler.service"] = function() {
             return new \SlaxWeb\Output\Handler\Json;
         };
     }
