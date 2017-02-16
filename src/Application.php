@@ -221,8 +221,8 @@ class Application extends \Pimple\Container
      * PHP files with the Config component, recursively.
      *
      * @param string $dir Directory from which the configuration files are loaded
-     * @param bool $prependNames Should configuration item names be prepended
-     *                           with the names of configuration file names
+     * @param bool $prepend Should configuration item names be prependedi with the
+     *                      names of configuration file names
      * @return void
      */
     protected function loadConfig(string $dir, bool $prepend = true)
