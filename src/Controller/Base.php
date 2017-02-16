@@ -1,6 +1,8 @@
 <?php
 namespace SlaxWeb\Bootstrap\Controller;
 
+use SlaxWeb\Bootstrap\Application;
+
 /**
  * Base Controller
  *
@@ -26,33 +28,15 @@ abstract class Base
     protected $app = null;
 
     /**
-     * Logger instance
-     *
-     * @var \Psr\Log\LoggerInterface
-     */
-    protected $logger = null;
-
-    /**
-     * Config container object
-     *
-     * @var \SlaxWeb\Config\Container
-     */
-    protected $config = null;
-
-    /**
      * Class Constructor
      *
      * Copy the Application object instance to class properties, and extract Logger
      * and Config services from the Application object to class properties.
      *
      * @param \SlaxWeb\Bootstrap\Application $app Application object
-     * @param \Psr\Log\LoggerInterface $logger Logger instance
-     * @param \SlaxWeb\Config\Container $config Config container object
      */
-    public function __construct()
+    public function __construct($app)
     {
         $this->app = $app;
-        $this->logger = $app["logger.service"]();
-        $this->config = $app["config.service"];
     }
 }

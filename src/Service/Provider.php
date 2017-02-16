@@ -40,11 +40,7 @@ class Provider implements \Pimple\ServiceProviderInterface
                 $class = rtrim($config["app.controllerNamespace"], "\\")
                     . "\\"
                     . str_replace("/", "\\", $name);
-                $app[$cacheName] = new $class(
-                    $app,
-                    $container["logger.service"](),
-                    $container["config.service"]
-                );
+                $app[$cacheName] = new $class($app);
 
                 if (method_exists($app[$cacheName], "init")) {
                     array_shift($args);
