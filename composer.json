@@ -25,7 +25,11 @@
     },
     "autoload": {
         "psr-4": {
-            "SlaxWeb\\Bootstrap\\": "src",
+            "SlaxWeb\\Bootstrap\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "SlaxWeb\\Bootstrap\\Tests\\Unit\\": "tests/unit",
             "SlaxWeb\\Bootstrap\\Tests\\Helper\\": "tests/_support/Helper"
         }
