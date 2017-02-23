@@ -10,10 +10,10 @@
     ],
     "require": {
         "php":  ">=7.0.0",
-        "slaxweb/router": "~0.5",
-        "slaxweb/hooks": "~0.5",
-        "slaxweb/logger": "~0.4",
-        "slaxweb/config": "~0.2",
+        "slaxweb/router": "dev-master",
+        "slaxweb/hooks": "dev-master",
+        "slaxweb/logger": "dev-master",
+        "slaxweb/config": "dev-master",
         "slaxweb/output": "~0.1",
         "pimple/pimple": "3.0.2"
     },
