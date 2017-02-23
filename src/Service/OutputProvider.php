@@ -28,7 +28,7 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app["output.service"] = function(Application $app) {
+        $app["output.service"] = function (Application $app) {
             $config = $app["config.service"];
             $manager = new \SlaxWeb\Output\Manager(
                 $app["logger.service"]("System"),
@@ -46,7 +46,7 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
             return $manager;
         };
 
-        $app["outputHandler.service"] = $app->protect(function() use ($app) {
+        $app["outputHandler.service"] = $app->protect(function () use ($app) {
             $handler = $app["outputHandler"] ?? $app["config.service"]["output.defaultHandler"];
 
             switch ($handler) {
@@ -73,11 +73,11 @@ class OutputProvider implements \Pimple\ServiceProviderInterface
             return $handler;
         });
 
-        $app["outputViewHandler.service"] = function() {
+        $app["outputViewHandler.service"] = function () {
             return new \SlaxWeb\Output\Handler\View;
         };
 
-        $app["outputJsonHandler.service"] = function() {
+        $app["outputJsonHandler.service"] = function () {
             return new \SlaxWeb\Output\Handler\Json;
         };
     }
