@@ -4,6 +4,18 @@ Changes between version.
 
 ## Current changes
 
+* add service provider for config component
+* add service provider for hooks component
+* add service provider for logger component
+* add service provider for router component
+* add exception for invalid config handler
+* add exception for unknown logger handler
+* add exception for logger config
+
+## v0.5
+
+### v0.5.0
+
 * set base URL and base path to application properties
 * add base controller abstract class for simplified instantiation of controller
 classes
