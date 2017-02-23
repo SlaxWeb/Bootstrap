@@ -16,7 +16,7 @@ use Pimple\Container;
  * @link      https://github.com/slaxweb/
  * @version   0.2
  */
-class Provider implements \Pimple\ServiceProviderInterface
+class ConfigProvider implements \Pimple\ServiceProviderInterface
 {
     /**
      * Register provider
