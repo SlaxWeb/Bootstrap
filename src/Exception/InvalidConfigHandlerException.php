@@ -1,5 +1,5 @@
 <?php
-namespace SlaxWeb\Config\Exception;
+namespace SlaxWeb\Bootstrap\Exception;
 
 /**
  * Invalid Configuration Handler Exception
