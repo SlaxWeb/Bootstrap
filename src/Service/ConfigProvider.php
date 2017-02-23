@@ -28,13 +28,13 @@ class Provider implements \Pimple\ServiceProviderInterface
      */
     public function register(Container $container)
     {
-        $container["config.service"] = function (Container $cont) {
+        $container["config.service"] = function(Container $cont) {
             return new \SlaxWeb\Config\Container(
                 $cont["configHandler.service"]
             );
         };
 
-        $container["configHandler.service"] = function (Container $cont) {
+        $container["configHandler.service"] = function(Container $cont) {
             switch ($cont["configHandler"]) {
                 case \SlaxWeb\Config\Container::PHP_CONFIG_HANDLER:
                     return new \SlaxWeb\Config\PhpHandler(
