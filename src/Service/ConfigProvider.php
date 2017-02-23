@@ -1,7 +1,7 @@
 <?php
 namespace SlaxWeb\Bootstrap\Service;
 
-use Pimple\Container;
+use SlaxWeb\Bootstrap\Application as App;
 
 /**
  * Config Provider
@@ -23,31 +23,31 @@ class ConfigProvider implements \Pimple\ServiceProviderInterface
      *
      * Register is called by the container, when the provider gets registered.
      *
-     * @param \Pimple\Container $container Dependency Injection Container
+     * @param \SlaxWeb\Bootstrap\Application $app Dependency Injection Container
      * @return void
      */
-    public function register(Container $container)
+    public function register(App $app)
     {
-        $container["config.service"] = function(Container $cont) {
+        $app["config.service"] = function(App $app) {
             return new \SlaxWeb\Config\Container(
-                $cont["configHandler.service"]
+                $app["configHandler.service"]
             );
         };
 
-        $container["configHandler.service"] = function(Container $cont) {
-            switch ($cont["configHandler"]) {
+        $app["configHandler.service"] = function(App $app) {
+            switch ($app["configHandler"]) {
                 case \SlaxWeb\Config\Container::PHP_CONFIG_HANDLER:
                     return new \SlaxWeb\Config\PhpHandler(
-                        [$cont["configResourceLocation"]]
+                        [$app["configResourceLocation"]]
                     );
                 case \SlaxWeb\Config\Container::XML_CONFIG_HANDLER:
                     return new \SlaxWeb\Config\XmlHandler(
-                        [$cont["configResourceLocation"]],
+                        [$app["configResourceLocation"]],
                         new \Desperado\XmlBundle\Model\XmlReader
                     );
                 case \SlaxWeb\Config\Container::YAML_CONFIG_HANDLER:
                     return new \SlaxWeb\Config\YamlHandler(
-                        [$cont["configResourceLocation"]]
+                        [$app["configResourceLocation"]]
                     );
                 default:
                     $availOpts = [
