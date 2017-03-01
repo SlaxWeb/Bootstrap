@@ -22,7 +22,7 @@ abstract class RouteCollection implements \Pimple\ServiceProviderInterface
     /**
      * Application Container
      *
-     * @var \SlaxWeb\Bootstrap\Application
+     * @var \Pimple\Container
      */
     protected $app = null;
 
