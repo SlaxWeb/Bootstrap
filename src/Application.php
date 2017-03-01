@@ -44,7 +44,7 @@ class Application extends \Pimple\Container
         parent::__construct();
 
         // register config provider and load config
-        $this->register(new \SlaxWeb\Config\Service\Provider);
+        $this->register(new \SlaxWeb\Bootstrap\Service\ConfigProvider);
         $this->loadConfig($this["configResourceLocation"]);
     }
 

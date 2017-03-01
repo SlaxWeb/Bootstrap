@@ -172,13 +172,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->expects($this->exactly(2))
             ->method("register")
             ->withConsecutive(
-                [new \SlaxWeb\Config\Service\Provider],
+                [new \SlaxWeb\Bootstrap\Service\ConfigProvider],
                 [
                     $this->callback(function ($class) {
                         return $class instanceof TestProvider;
                     })
                 ],
-                [new \SlaxWeb\Config\Service\Provider]
+                [new \SlaxWeb\Bootstrap\Service\ConfigProvider]
             );
 
         $app->__construct(__DIR__, __DIR__);
@@ -227,13 +227,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->expects($this->exactly(2))
             ->method("register")
             ->withConsecutive(
-                [new \SlaxWeb\Config\Service\Provider],
+                [new \SlaxWeb\Bootstrap\Service\ConfigProvider],
                 [
                     $this->callback(function ($class) {
                         return $class instanceof TestProvider;
                     })
                 ],
-                [new \SlaxWeb\Config\Service\Provider]
+                [new \SlaxWeb\Bootstrap\Service\ConfigProvider]
             );
 
         $app->__construct(__DIR__, __DIR__);
@@ -280,13 +280,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app->expects($this->exactly(2))
             ->method("register")
             ->withConsecutive(
-                [new \SlaxWeb\Config\Service\Provider],
+                [new \SlaxWeb\Bootstrap\Service\ConfigProvider],
                 [
                     $this->callback(function ($class) {
                         return $class instanceof TestProvider;
                     })
                 ],
-                [new \SlaxWeb\Config\Service\Provider]
+                [new \SlaxWeb\Bootstrap\Service\ConfigProvider]
             );
 
         $app->__construct(__DIR__, __DIR__);
