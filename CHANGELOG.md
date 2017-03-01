@@ -12,6 +12,8 @@ Changes between version.
 * add exception for unknown logger handler
 * add exception for logger config
 * move route collection provider from router component
+* add possibility to define route and route collection specific before and/or after
+dispatch hooks
 
 ## v0.5
 
