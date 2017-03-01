@@ -11,6 +11,7 @@ Changes between version.
 * add exception for invalid config handler
 * add exception for unknown logger handler
 * add exception for logger config
+* move route collection provider from router component
 
 ## v0.5
 
