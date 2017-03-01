@@ -32,7 +32,21 @@ abstract class RouteCollection implements \Pimple\ServiceProviderInterface
      * @var array
      */
     protected $routes = [];
- 
+
+    /**
+     * Before Route Dispatch Hook
+     *
+     * @var string
+     */
+    protected $beforeDispatch = "";
+
+    /**
+     * After Route Dispatch Hook
+     *
+     * @var string
+     */
+    protected $afterDispatch = "";
+
     /**
      * Register Service
      *
@@ -56,6 +70,14 @@ abstract class RouteCollection implements \Pimple\ServiceProviderInterface
                 ($route["method"] ?? Route::METHOD_GET),
                 ($route["action"] ?? null)
             );
+
+            foreach (["beforeDispatch", "afterDispatch"] as $type) {
+                if (isset($routeDefinition[$type])) {
+                    $route->setHook($routeDefinition[$type], $type === "afterDispatch");
+                } elseif ($this->{$type} !== "") {
+                    $route->setHook($this->{$type}, $type === "afterDispatch");
+                }
+            }
 
             $app["routesContainer.service"]->add($newRoute);
         }
