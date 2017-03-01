@@ -1,7 +1,7 @@
 <?php
 namespace SlaxWeb\Bootstrap\Service;
 
-use SlaxWeb\Bootstrap\Application as App;
+use Pimple\Container as App;
 
 /**
  * Hooks Service Provider
@@ -24,7 +24,7 @@ class HooksProvider implements \Pimple\ServiceProviderInterface
      *
      * Register the Hooks Service Provider to the DIC.
      *
-     * @param \SlaxWeb\Bootstrap\Application $app DIC
+     * @param \Pimple\Container $app DIC
      * @return void
      */
     public function register(App $app)

@@ -4,7 +4,7 @@ namespace SlaxWeb\Bootstrap\Service;
 use SlaxWeb\Router\Route;
 use SlaxWeb\Router\Request;
 use SlaxWeb\Router\Response;
-use SlaxWeb\Bootstrap\Application as App;
+use Pimple\Container as App;
 use SlaxWeb\Router\Container as RoutesContainer;
 use SlaxWeb\Router\Dispatcher as RouteDispatcher;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -29,7 +29,7 @@ class RouterProvider implements \Pimple\ServiceProviderInterface
      *
      * Register the Hooks Service Provider to the DIC.
      *
-     * @param \SlaxWeb\Bootstrap\Application $app DIC
+     * @param \Pimple\Container $app DIC
      * @return void
      */
     public function register(App $app)
@@ -119,7 +119,7 @@ class RouterProvider implements \Pimple\ServiceProviderInterface
      *
      * Sets the Router related data to application properties.
      *
-     * @param \SlaxWeb\Bootstrap\Application $app DIC
+     * @param \Pimple\Container $app DIC
      * @return void
      */
     protected function setAppProperties(App $app)

@@ -1,7 +1,7 @@
 <?php
 namespace SlaxWeb\Bootstrap\Service;
 
-use SlaxWeb\Bootstrap\Application as App;
+use Pimple\Container as App;
 
 /**
  * Config Provider
@@ -23,7 +23,7 @@ class ConfigProvider implements \Pimple\ServiceProviderInterface
      *
      * Register is called by the container, when the provider gets registered.
      *
-     * @param \SlaxWeb\Bootstrap\Application $app Dependency Injection Container
+     * @param \Pimple\Container $app Dependency Injection Container
      * @return void
      */
     public function register(App $app)

@@ -2,9 +2,9 @@
 namespace SlaxWeb\Bootstrap\Service;
 
 use SlaxWeb\Logger\Helper;
+use Pimple\Container as App;
 use Monolog\Logger as MLogger;
 use SlaxWeb\Config\Container as Config;
-use SlaxWeb\Bootstrap\Application as App;
 
 /**
  * Logger Service Provider
@@ -26,7 +26,7 @@ class LoggerProvider implements \Pimple\ServiceProviderInterface
      * Method used by the DIC to register a new service provider. This Service
      * Provider defines only the Logger service.
      *
-     * @param \SlaxWeb\Bootstrap\Application $app Pimple Dependency Injection Container
+     * @param \Pimple\Container $app Pimple Dependency Injection Container
      * @return void
      */
     public function register(App $app)

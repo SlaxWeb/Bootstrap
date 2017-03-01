@@ -2,7 +2,7 @@
 namespace SlaxWeb\Bootstrap\Service;
 
 use SlaxWeb\Router\Route;
-use SlaxWeb\Bootstrap\Application as App;
+use Pimple\Container as App;
 
 /**
  * Route Collection Helper
@@ -55,7 +55,7 @@ abstract class RouteCollection implements \Pimple\ServiceProviderInterface
      * 'routes' is iterated, and all found routes are added to the Route
      * Container. Also exposes the received DIC to the protected property.
      *
-     * @param \SlaxWeb\Bootstrap\Application $app DIC
+     * @param \Pimple\Container $app DIC
      * @return void
      */
     public function register(App $app)
