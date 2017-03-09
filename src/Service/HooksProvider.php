@@ -34,7 +34,7 @@ class HooksProvider implements \Pimple\ServiceProviderInterface
         };
 
         $app["newHook.factory"] = $app->factory(
-            function (Container $app) {
+            function (App $app) {
                 return new \SlaxWeb\Hooks\Hook;
             }
         );
