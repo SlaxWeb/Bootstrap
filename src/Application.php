@@ -111,7 +111,7 @@ class Application extends \Pimple\Container
                 ["exception" => $routeNotFound]
             );
 
-            $response->setStatusCode(404)
+            $response->setStatusCode(404);
             $response->setContent($this->load404Page());
             throw $routeNotFound;
         }
