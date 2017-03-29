@@ -111,8 +111,9 @@ class Application extends \Pimple\Container
                 ["exception" => $routeNotFound]
             );
 
+            $response->setStatusCode(404)
             $response->setContent($this->load404Page());
-            return;
+            throw $routeNotFound;
         }
 
         $this["logger.service"]("System")->info(
