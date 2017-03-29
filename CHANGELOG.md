@@ -14,6 +14,9 @@ Changes between version.
 * move route collection provider from router component
 * add possibility to define route and route collection specific before and/or after
 dispatch hooks
+* set 404 status code on route not found exception
+* re-throw the route not found exception to allow the output component to handle
+it
 
 ## v0.5
 
