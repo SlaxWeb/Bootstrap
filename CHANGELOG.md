@@ -17,6 +17,8 @@ dispatch hooks
 * set 404 status code on route not found exception
 * re-throw the route not found exception to allow the output component to handle
 it
+* resources like hooks, routes, and providers are now loaded from a single method
+to help improve performance
 
 ## v0.5
 
