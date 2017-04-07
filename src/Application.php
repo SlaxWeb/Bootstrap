@@ -58,9 +58,7 @@ class Application extends \Pimple\Container
      */
     public function init()
     {
-        $this->loadHooks();
-        $this->loadRoutes();
-        $this->registerProviders();
+        $this->loadResources();
         $this->prepRequestData();
 
         // initialize the output component by loading it, the component will register
@@ -137,81 +135,31 @@ class Application extends \Pimple\Container
     }
 
     /**
-     * Register providers
+     * Load resources
      *
-     * Check with the Configuration if the Application should register
-     * additional providers. If so register them with the DIC.
-     *
-     * @return void
-     */
-    protected function registerProviders()
-    {
-        // check config exists
-        if (($this["config.service"]["provider.provider.register"] ?? false)
-            === false) {
-            return;
-        }
-        if (isset($this["config.service"]["provider.providerList"]) === false
-            || is_array($this["config.service"]["provider.providerList"])
-            === false) {
-            return;
-        }
-
-        foreach ($this["config.service"]["provider.providerList"] as $providerClass) {
-            $this->register(new $providerClass);
-        }
-    }
-
-    /**
-     * Load Hook Definitions
-     *
-     * Check with the Configuration if the Application should load hook
-     * definitions. If so register their providers with the DIC.
+     * Load the resource class names from the configuration, and register them with
+     * the service provider.
      *
      * @return void
      */
-    protected function loadHooks()
+    protected function loadResources()
     {
-        // check config exists
-        if (($this["config.service"]["provider.hooks.load"] ?? false)
-            === false) {
-            return;
-        }
-        if (isset($this["config.service"]["provider.hooksList"]) === false
-            || is_array($this["config.service"]["provider.hooksList"])
-            === false) {
-            return;
-        }
+        $config = $this["config.service"];
+        foreach (["hooks", "routes", "provider"] as $type) {
+            // remnant of an old bad decission
+            $confName = $type === "provider" ? "register" : "load";
+            if (($config["provider.{$type}.{$confName}"] ?? false) === false) {
+                continue;
+            }
+            if (isset($config["provider.{$type}List"]) === false
+                || is_array($config["provider.{$type}List"]) === false
+            ) {
+                continue;
+            }
 
-        foreach ($this["config.service"]["provider.hooksList"] as $hookClass) {
-            $this->register(new $hookClass);
-        }
-    }
-
-    /**
-     * Load Routes
-     *
-     * Check configuration if the Application should load routes with the help
-     * of Route Collections. If so register all their providers that are defined
-     * in the configuration with the DIC.
-     *
-     * @return void
-     */
-    protected function loadRoutes()
-    {
-        // check config exists
-        if (($this["config.service"]["provider.routes.load"] ?? false)
-            === false) {
-            return;
-        }
-        if (isset($this["config.service"]["provider.routesList"]) === false
-            || is_array($this["config.service"]["provider.routesList"])
-            === false) {
-            return;
-        }
-
-        foreach ($this["config.service"]["provider.routesList"] as $routeClass) {
-            $this->register(new $routeClass);
+            foreach ($config["provider.{$type}List"] as $class) {
+                $this->register(new $class);
+            }
         }
     }
 

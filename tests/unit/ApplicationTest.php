@@ -110,7 +110,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["registerProviders", "loadConfig", "register"])
+            ->setMethods(["loadConfig", "register"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -120,9 +120,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->_hooks->expects($this->once())
             ->method("exec")
             ->with("application.init.after");
-
-        $app->expects($this->once())
-            ->method("registerProviders");
 
         $app["output.service"] = null;
         $app["config.service"] = $this->_config;
@@ -139,145 +136,54 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Provider Registration
+     * Test Resource Loading
      *
-     * Ensure that the application is registering the providers that the config
-     * lists.
+     * Tests the resource loading and ensures the correct methods are called in
+     * the config object to get correct data as well as that correct classes are
+     * registered with the service provider.
      *
      * @return void
      */
-    public function testProviderRegistration()
+    public function testResourceLoading()
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["register", "loadHooks", "loadRoutes", "prepRequestData", "loadConfig"])
+            ->setMethods(["register", "prepRequestData", "loadConfig"])
             ->getMock();
 
         $this->_config->expects($this->any())
             ->method("offsetExists")
             ->willReturn(true);
 
-        $this->_config->expects($this->exactly(4))
+        $this->_config->expects($this->exactly(9))
             ->method("offsetGet")
             ->withConsecutive(
+                ["provider.hooks.load"],
+                ["provider.hooksList"],
+                ["provider.hooksList"],
+
+                ["provider.routes.load"],
+                ["provider.routesList"],
+                ["provider.routesList"],
+
                 ["provider.provider.register"],
+                ["provider.providerList"],
                 ["provider.providerList"]
             )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
-                false
-            ));
 
-        $app->expects($this->exactly(2))
-            ->method("register")
-            ->withConsecutive(
-                [new \SlaxWeb\Bootstrap\Service\ConfigProvider],
-                [
-                    $this->callback(function ($class) {
-                        return $class instanceof TestProvider;
-                    })
-                ],
-                [new \SlaxWeb\Bootstrap\Service\ConfigProvider]
-            );
-
-        $app->__construct(__DIR__, __DIR__);
-
-        $app["output.service"] = null;
-        $app["config.service"] = $this->_config;
-        $app["routeDispatcher.service"] = $this->_router;
-        $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
-
-        $app->init();
-        $app->init();
-    }
-
-    /**
-     * Test Hook Providers Registration
-     *
-     * Ensure that the application is registering the hook definition providers
-     * that the config dictates.
-     *
-     * @return void
-     */
-    public function testHookProvidersRegistration()
-    {
-        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
-            ->disableOriginalConstructor()
-            ->setMethods(["register", "registerProviders", "loadRoutes", "prepRequestData", "loadConfig"])
-            ->getMock();
-
-        $this->_config->expects($this->any())
-            ->method("offsetExists")
-            ->willReturn(true);
-
-        $this->_config->expects($this->exactly(4))
-            ->method("offsetGet")
-            ->withConsecutive(
-                ["provider.hooks.load"],
-                ["provider.hooksList"]
-            )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
-                false
-            ));
 
-        $app->expects($this->exactly(2))
-            ->method("register")
-            ->withConsecutive(
-                [new \SlaxWeb\Bootstrap\Service\ConfigProvider],
-                [
-                    $this->callback(function ($class) {
-                        return $class instanceof TestProvider;
-                    })
-                ],
-                [new \SlaxWeb\Bootstrap\Service\ConfigProvider]
-            );
-
-        $app->__construct(__DIR__, __DIR__);
-
-        $app["output.service"] = null;
-        $app["config.service"] = $this->_config;
-        $app["routeDispatcher.service"] = $this->_router;
-        $app["hooks.service"] = $this->_hooks;
-        $app["logger.service"] = $app->protect(function () { return $this->_logger; });
-
-        $app->init();
-        $app->init();
-    }
-
-    /**
-     * Test Routes Loading
-     *
-     * Ensure that the Application is loading all the Route provider classes
-     * that the config dictates.
-     */
-    public function testRoutesLoading()
-    {
-        $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
-            ->disableOriginalConstructor()
-            ->setMethods(["register", "registerProviders", "loadConfig", "loadHooks", "prepRequestData"])
-            ->getMock();
-
-        $this->_config->expects($this->any())
-            ->method("offsetExists")
-            ->willReturn(true);
-
-        $this->_config->expects($this->exactly(4))
-            ->method("offsetGet")
-            ->withConsecutive(
-                ["provider.routes.load"],
-                ["provider.routesList"]
-            )->will($this->onConsecutiveCalls(
                 true,
                 ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
-                ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"],
-                false
+                ["\\SlaxWeb\\Bootstrap\\Tests\\Helper\\Provider"]
             ));
 
-        $app->expects($this->exactly(2))
+        $app->expects($this->exactly(4))
             ->method("register")
             ->withConsecutive(
                 [new \SlaxWeb\Bootstrap\Service\ConfigProvider],
@@ -285,8 +191,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
                     $this->callback(function ($class) {
                         return $class instanceof TestProvider;
                     })
-                ],
-                [new \SlaxWeb\Bootstrap\Service\ConfigProvider]
+                ]
             );
 
         $app->__construct(__DIR__, __DIR__);
@@ -297,7 +202,6 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["hooks.service"] = $this->_hooks;
         $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
-        $app->init();
         $app->init();
     }
 
@@ -313,7 +217,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["registerProviders", "register"])
+            ->setMethods(["register"])
             ->getMock();
         $expects = 0;
         foreach (scandir(__DIR__ . "/Config/") as $file) {
@@ -341,7 +245,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["registerProviders", "register", "loadConfig"])
+            ->setMethods(["register", "loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -391,7 +295,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["registerProviders", "register", "loadConfig"])
+            ->setMethods(["register", "loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -429,7 +333,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["registerProviders", "register", "loadConfig"])
+            ->setMethods(["register", "loadConfig"])
             ->getMock();
         $app->__construct(__DIR__, __DIR__);
 
@@ -453,7 +357,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $app["logger.service"] = $app->protect(function () { return $this->_logger; });
 
         $app->init();
-        $app->run($deps["request"], $deps["response"]);
+        $exception = false;
+        try {
+            $app->run($deps["request"], $deps["response"]);
+        } catch (\SlaxWeb\Router\Exception\RouteNotFoundException $e) {
+            $exception = true;
+        }
+        $this->assertTrue($exception, "A route not found exception was expected but not thrown");
     }
 
     /**
@@ -468,7 +378,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMockBuilder("\\SlaxWeb\\Bootstrap\\Application")
             ->disableOriginalConstructor()
-            ->setMethods(["loadConfig", "loadHooks", "loadRoutes", "registerProviders"])
+            ->setMethods(["loadConfig", "loadResources"])
             ->getMock();
 
         $this->_config->expects($this->any())
