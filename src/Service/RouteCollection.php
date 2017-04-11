@@ -73,9 +73,9 @@ abstract class RouteCollection implements \Pimple\ServiceProviderInterface
 
             foreach (["beforeDispatch", "afterDispatch"] as $type) {
                 if (isset($routeDefinition[$type])) {
-                    $route->setHook($routeDefinition[$type], $type === "afterDispatch");
+                    $newRoute->setHook($routeDefinition[$type], $type === "afterDispatch");
                 } elseif ($this->{$type} !== "") {
-                    $route->setHook($this->{$type}, $type === "afterDispatch");
+                    $newRoute->setHook($this->{$type}, $type === "afterDispatch");
                 }
             }
 
