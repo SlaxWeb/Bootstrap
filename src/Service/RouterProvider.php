@@ -110,22 +110,5 @@ class RouterProvider implements \Pimple\ServiceProviderInterface
         $app["response.service"] = function () {
             return new Response;
         };
-
-        $this->setAppProperties($app);
-    }
-
-    /**
-     * Set application properties
-     *
-     * Sets the Router related data to application properties.
-     *
-     * @param \Pimple\Container $app DIC
-     * @return void
-     */
-    protected function setAppProperties(App $app)
-    {
-        $app["basePath"] = $app["request.service"]->getBasePath();
-        $app["baseUrl"] = $app["request.service"]
-            ->getSchemeAndHttpHost() . $app["basePath"];
     }
 }

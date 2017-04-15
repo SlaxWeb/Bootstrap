@@ -85,6 +85,8 @@ class Application extends \Pimple\Container
     {
         $this["logger.service"]("System")->info("Beginning process for request.", [$request]);
 
+        $this->setRequestProperties($request);
+
         $result = $this["hooks.service"]->exec(
             "application.dispatch.before",
             $request,
@@ -211,6 +213,20 @@ class Application extends \Pimple\Container
             "uri"       =>  $baseUrl . $uri . $query,
             "method"    =>  $_SERVER["REQUEST_METHOD"] ?? "GET"
         ];
+    }
+
+    /**
+     * Set application properties
+     *
+     * Sets some basic request properties for the application.
+     *
+     * @param \SlaxWeb\Route\Request $request Received Request
+     * @return void
+     */
+    protected function setRequestProperties(Request $request)
+    {
+        $this["basePath"] = $request->getBasePath();
+        $this["baseUrl"] = $request->getSchemeAndHttpHost() . $this["basePath"];
     }
 
     /**
