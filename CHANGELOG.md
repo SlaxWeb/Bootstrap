@@ -19,6 +19,7 @@ dispatch hooks
 it
 * resources like hooks, routes, and providers are now loaded from a single method
 to help improve performance
+* add component command
 
 ## v0.5
 
