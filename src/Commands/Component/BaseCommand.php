@@ -173,15 +173,67 @@ abstract class BaseCommand extends Command
         $this->output->writeln("<comment>Checking if composer exists ...</>");
 
         ($this->composer = trim(`which composer`)) || ($this->composer = trim(`which composer.phar`));
-        if ($this->composer === "") {
-            $this->logger->error("Composer not found. Make sure you have it installed, and is executable in your PATH");
-            $this->output->writeln(
-                "<error>ERROR: Composer not found. Make sure you have it installed, and is executable in your PATH</>"
-            );
+        if ($this->composer === "" && $this->installComposer() === false) {
+            $msg = "Composer not found and failed to install automatically. Make sure you have it installed, "
+                . "and is executable in your PATH";
+            $this->logger->error($msg);
+            $this->output->writeln("<error>ERROR: {$msg}");
             return false;
         }
 
         $this->output->writeln("<comment>OK</>");
+        return true;
+    }
+
+    /**
+     * Install composer
+     *
+     * Download and install composer and set the $composer property to the newly
+     * installed composer executable. Returns a bool status.
+     *
+     * @return bool
+     */
+    protected function installComposer(): bool
+    {
+        $this->output->writeln("<comment>Composer not found in your path. Attempting to install it ...</>");
+
+        if (file_exists(__DIR__ . "/composer.phar")) {
+            // already installed, re-use it
+            $this->composer = __DIR__ . "/composer.phar";
+            return true;
+        }
+
+        $installFile = __DIR__ . "/composer-setup.php";
+        copy("https://getcomposer.org/installer", $installFile);
+        if (($calced = hash("SHA384", $installFile))
+            !== ($sig = file_get_contents("https://composer.github.io/installer.sig"))
+        ) {
+            $this->logger->error(
+                "Downloaded composer install file signature is not correct",
+                ["caluclated" => $calced, "signature" => $sig]
+            );
+            unlink($installFile);
+            return false;
+        }
+
+        $this->output->writeln(
+            "<comment>Downloaded composer installation file. Proceeding with installation ...</>"
+        );
+
+        exec("php {$installFile} --install-dir=\"" . __DIR__ . "\"", $output, $status);
+        unlink($installFile);
+
+        if ($status !== 0) {
+            $this->logger->error(
+                "Error installing composer.",
+                ["output" => $output, "status" => $status]
+            );
+            return false;
+        }
+
+        // setting the composer to the $composer property and making it executable
+        $this->composer = __DIR__ . "/composer.phar";
+        shell_exec("chmod +x {$this->composer}");
         return true;
     }
 
