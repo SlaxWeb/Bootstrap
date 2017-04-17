@@ -20,6 +20,7 @@ it
 * resources like hooks, routes, and providers are now loaded from a single method
 to help improve performance
 * add component command
+* download and install composer if not found in PATH
 
 ## v0.5
 
