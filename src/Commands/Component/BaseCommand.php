@@ -205,9 +205,9 @@ abstract class BaseCommand extends Command
 
         $installFile = __DIR__ . "/composer-setup.php";
         copy("https://getcomposer.org/installer", $installFile);
-        if (($calced = hash_file("SHA384", $installFile))
-            !== ($sig = file_get_contents("https://composer.github.io/installer.sig"))
-        ) {
+        $calced = hash_file("SHA384", $installFile);
+        $sig = trim(file_get_contents("https://composer.github.io/installer.sig"));
+        if ($calced !== $sig) {
             $this->logger->error(
                 "Downloaded composer install file signature is not correct",
                 ["caluclated" => $calced, "signature" => $sig]
