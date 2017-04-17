@@ -15,7 +15,7 @@ use Pimple\Container as App;
  * @copyright 2016 (c) Tomaz Lovrec
  * @license   MIT <https://opensource.org/licenses/MIT>
  * @link      https://github.com/slaxweb/
- * @version   0.5
+ * @version   0.6
  */
 class HooksProvider implements \Pimple\ServiceProviderInterface
 {

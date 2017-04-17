@@ -10,7 +10,7 @@
  * @copyright 2016 (c) Tomaz Lovrec
  * @license   MIT <https://opensource.org/licenses/MIT>
  * @link      https://github.com/slaxweb/
- * @version   0.1
+ * @version   0.6
  *
  * @todo: needs a complete rewrite in the future, structure of the code here is catastrophic! Author: slax0r
  */
