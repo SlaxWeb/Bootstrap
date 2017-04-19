@@ -21,6 +21,7 @@ it
 to help improve performance
 * add component command
 * download and install composer if not found in PATH
+* fix component installation command for specific versions
 
 ## v0.5
 
