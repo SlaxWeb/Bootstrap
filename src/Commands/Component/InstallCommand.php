@@ -113,7 +113,7 @@ class InstallCommand extends BaseCommand
     {
         $exit = 0;
         system(
-            "{$this->composer} require {$component["installFlags"]} {$component["name"]} {$component["version"]}",
+            "{$this->composer} require {$component["installFlags"]} {$component["name"]}:{$component["version"]}",
             $exit
         );
         if ($exit !== 0) {
