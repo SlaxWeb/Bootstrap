@@ -1,5 +1,5 @@
 <?php
-namespace SlaxWeb\Router\Service;
+namespace SlaxWeb\Bootstrap\Service;
 
 use Pimple\Container as Application;
 
