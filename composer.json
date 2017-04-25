@@ -10,11 +10,11 @@
     ],
     "require": {
         "php":  ">=7.0.0",
-        "slaxweb/router": "dev-release/0.6.0",
-        "slaxweb/hooks": "dev-release/0.6.0",
-        "slaxweb/logger": "dev-release/0.5.0",
-        "slaxweb/config": "dev-release/0.3.0",
-        "slaxweb/output": "dev-release/0.2.0",
+        "slaxweb/router": "~0.6",
+        "slaxweb/hooks": "~0.6",
+        "slaxweb/logger": "~0.5",
+        "slaxweb/config": "~0.3",
+        "slaxweb/output": "~0.2",
         "pimple/pimple": "3.0.2"
     },
     "require-dev": {
