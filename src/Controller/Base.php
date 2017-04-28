@@ -27,6 +27,8 @@ abstract class Base
      */
     protected $app = null;
 
+    protected $autoload = [];
+
     /**
      * Class Constructor
      *
@@ -38,5 +40,12 @@ abstract class Base
     public function __construct($app)
     {
         $this->app = $app;
+        foreach ($this->autoload as $dependancy) {
+            if (isset($app["$dependancy.service"])) {
+                $this->$$dependancy = $app["$dependancy.service"];
+            }
+
+        }
+
     }
 }
