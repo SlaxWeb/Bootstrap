@@ -15,7 +15,8 @@
         "slaxweb/logger": "~0.5",
         "slaxweb/config": "~0.3",
         "slaxweb/output": "~0.2",
-        "pimple/pimple": "3.0.2"
+        "pimple/pimple": "3.0.2",
+        "guzzlehttp/guzzle": "~6.2"
     },
     "require-dev": {
         "codeception/codeception": "~2.2",
