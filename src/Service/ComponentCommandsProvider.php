@@ -32,7 +32,7 @@ class ComponentCommandsProvider implements \Pimple\ServiceProviderInterface
         if (isset($app["guzzle.service"]) === false) {
             $app["guzzle.service"] = function() {
                 return new \GuzzleHttp\Guzzle;
-            }
+            };
         }
 
         $app["slaxerCommands"] = array_merge(
@@ -40,6 +40,6 @@ class ComponentCommandsProvider implements \Pimple\ServiceProviderInterface
             [
                 \SlaxWeb\Bootstrap\Command\Component\InstallCommand::class => ["guzzle.service"]
             ]
-        )
+        );
     }
 }
