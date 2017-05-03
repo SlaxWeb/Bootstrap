@@ -30,15 +30,15 @@ class ComponentCommandsProvider implements \Pimple\ServiceProviderInterface
     public function register(App $app)
     {
         if (isset($app["guzzle.service"]) === false) {
-            $app["guzzle.service"] = function() {
-                return new \GuzzleHttp\Guzzle;
+            $app["guzzleClient.service"] = function() {
+                return new \GuzzleHttp\Client;
             };
         }
 
         $app["slaxerCommands"] = array_merge(
             $app["slaxerCommands"] ?? [],
             [
-                \SlaxWeb\Bootstrap\Command\Component\InstallCommand::class => ["guzzle.service"]
+                \SlaxWeb\Bootstrap\Command\Component\InstallCommand::class => ["guzzleClient.service"]
             ]
         );
     }
