@@ -35,10 +35,24 @@ class ComponentCommandsProvider implements \Pimple\ServiceProviderInterface
             };
         }
 
+        /*
+         * This is only a temporary service definition to satisfy the install component
+         * command and to load the service provider into it through the new params
+         * as services method.
+         *
+         * @todo: remove when the component commands are refactored
+         */
+        $app["serviceProvider.service"] = function(App $app) {
+            return $app;
+        };
+
         $app["slaxerCommands"] = array_merge(
             $app["slaxerCommands"] ?? [],
             [
-                \SlaxWeb\Bootstrap\Commands\Component\InstallCommand::class => ["guzzleClient.service"]
+                \SlaxWeb\Bootstrap\Commands\Component\InstallCommand::class => [
+                    "serviceProvider.service",
+                    "guzzleClient.service"
+                ]
             ]
         );
     }
