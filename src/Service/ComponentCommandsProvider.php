@@ -38,7 +38,7 @@ class ComponentCommandsProvider implements \Pimple\ServiceProviderInterface
         $app["slaxerCommands"] = array_merge(
             $app["slaxerCommands"] ?? [],
             [
-                \SlaxWeb\Bootstrap\Command\Component\InstallCommand::class => ["guzzleClient.service"]
+                \SlaxWeb\Bootstrap\Commands\Component\InstallCommand::class => ["guzzleClient.service"]
             ]
         );
     }
