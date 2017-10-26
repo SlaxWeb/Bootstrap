@@ -18,9 +18,9 @@
 namespace SlaxWeb\Bootstrap\Commands\Component;
 
 use SlaxWeb\Bootstrap\Application;
-use Symfony\Component\Console\Command\Command;
+use SlaxWeb\Slaxer\AbstractCommand;
 
-abstract class BaseCommand extends Command
+abstract class BaseCommand extends AbstractCommand
 {
     /**
      * Input
